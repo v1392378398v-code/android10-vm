@@ -7,6 +7,10 @@ on:
     branches: [ main, master ]
   workflow_dispatch:
 
+env:
+  ANDROID_HOME: /usr/local/lib/android/sdk
+  ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -21,24 +25,21 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         
-    - name: Set up Android SDK
-      uses: android-actions/setup-android@v3
-      
-    - name: Install NDK
+    - name: Install Android SDK components
       run: |
-        echo "y" | sdkmanager --install "ndk;26.1.10909125" "build-tools;35.0.0" "platforms;android-35"
+        yes | sdkmanager --licenses > /dev/null 2>&1 || true
+        sdkmanager "ndk;26.1.10909125" "build-tools;35.0.0" "platforms;android-35" "platform-tools"
         
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
       
     - name: Build Debug APK
       run: |
-        ./gradlew :app:assembleDebug --stacktrace || echo "Build may require ROM input files. See README for details."
-      continue-on-error: true
-      
+        ./gradlew :app:assembleDebug --stacktrace 2>&1 | tail -100
+        
     - name: Upload APK
       uses: actions/upload-artifact@v4
-      if: success() || failure()
+      if: always()
       with:
         name: apk
         path: app/build/outputs/apk/debug/*.apk
