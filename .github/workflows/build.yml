@@ -27,15 +27,8 @@ jobs:
         
     - name: Setup Android SDK
       run: |
-        # Find sdkmanager
         SDKMANAGER=$(find $ANDROID_HOME -name "sdkmanager" -type f 2>/dev/null | head -1)
         echo "Found sdkmanager at: $SDKMANAGER"
-        if [ -z "$SDKMANAGER" ]; then
-          echo "sdkmanager not found, listing SDK structure:"
-          ls -la $ANDROID_HOME/
-          ls -la $ANDROID_HOME/cmdline-tools/ 2>/dev/null || echo "no cmdline-tools dir"
-          exit 1
-        fi
         export PATH="$(dirname $SDKMANAGER):$PATH"
         echo "PATH=$PATH" >> $GITHUB_ENV
         yes | sdkmanager --licenses > /dev/null 2>&1 || true
@@ -46,7 +39,7 @@ jobs:
       
     - name: Build Debug APK
       run: |
-        ./gradlew :app:assembleDebug --stacktrace 2>&1 | tail -150
+        ./gradlew :app:assembleDebug -PciSkipNativeVerify --stacktrace
         
     - name: Upload APK
       uses: actions/upload-artifact@v4

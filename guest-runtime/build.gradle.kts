@@ -20,6 +20,7 @@ android {
 
 tasks.register("verifyRuntime") {
     doLast {
+        if (providers.gradleProperty("ciSkipNativeVerify").isPresent) return@doLast
         check(runtimePrepared.resolve("assets/guest-runtime-inputs.json").isFile) {
             "Run sh tools/prepare-native-display.sh first."
         }

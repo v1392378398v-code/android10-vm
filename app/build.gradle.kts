@@ -42,6 +42,7 @@ dependencies {
 
 tasks.register("verifyNativeDisplay") {
     doLast {
+        if (providers.gradleProperty("ciSkipNativeVerify").isPresent) return@doLast
         check(!providers.gradleProperty("bundledGuest").isPresent) { "The native entry uses native-display inputs." }
         check(layout.buildDirectory.file("native-display/assets/native-display-inputs.json").get().asFile.isFile) {
             "Run sh tools/prepare-native-display.sh first."

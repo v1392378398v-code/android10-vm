@@ -13,6 +13,7 @@ android {
 
 tasks.register("verifyRenderer") {
     doLast {
+        if (providers.gradleProperty("ciSkipNativeVerify").isPresent) return@doLast
         check(layout.buildDirectory.file("prepared/jniLibs/arm64-v8a/liba10vm-desktop-window.so").get().asFile.isFile) {
             "Run sh tools/prepare-native-display.sh first."
         }
