@@ -25,17 +25,28 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         
-    - name: Install Android SDK components
+    - name: Setup Android SDK
       run: |
+        # Find sdkmanager
+        SDKMANAGER=$(find $ANDROID_HOME -name "sdkmanager" -type f 2>/dev/null | head -1)
+        echo "Found sdkmanager at: $SDKMANAGER"
+        if [ -z "$SDKMANAGER" ]; then
+          echo "sdkmanager not found, listing SDK structure:"
+          ls -la $ANDROID_HOME/
+          ls -la $ANDROID_HOME/cmdline-tools/ 2>/dev/null || echo "no cmdline-tools dir"
+          exit 1
+        fi
+        export PATH="$(dirname $SDKMANAGER):$PATH"
+        echo "PATH=$PATH" >> $GITHUB_ENV
         yes | sdkmanager --licenses > /dev/null 2>&1 || true
-        sdkmanager "ndk;26.1.10909125" "build-tools;35.0.0" "platforms;android-35" "platform-tools"
+        sdkmanager "ndk;26.1.10909125" "build-tools;35.0.0" "platforms;android-35"
         
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
       
     - name: Build Debug APK
       run: |
-        ./gradlew :app:assembleDebug --stacktrace 2>&1 | tail -100
+        ./gradlew :app:assembleDebug --stacktrace 2>&1 | tail -150
         
     - name: Upload APK
       uses: actions/upload-artifact@v4
