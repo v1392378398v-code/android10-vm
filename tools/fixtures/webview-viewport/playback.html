@@ -1,0 +1,40 @@
+<!doctype html>
+<html><head><meta name="viewport" content="width=device-width,initial-scale=1">
+<style>html,body{margin:0;background:#fff}video{display:block;width:100%;aspect-ratio:16/9}</style>
+</head><body><video id="video" src="playback.mp4" playsinline></video><script>
+const video=document.getElementById('video'), events=[];
+let ticks=0, videoCallbacks=0, playError=null, lastFrame=null;
+video.muted=new URLSearchParams(location.search).get('muted')==='true';
+for(const name of ['loadedmetadata','loadeddata','canplay','playing','waiting','stalled',
+  'pause','ended','error','timeupdate','seeking','seeked']) {
+  video.addEventListener(name,()=>{
+    events.push({name,time:video.currentTime,wall:performance.now()});
+    if(events.length>32)events.shift();
+  });
+}
+if(video.requestVideoFrameCallback) {
+  const frame=(now,metadata)=>{
+    videoCallbacks++;
+    lastFrame={mediaTime:metadata.mediaTime,presentedFrames:metadata.presentedFrames,
+      expectedDisplayTime:metadata.expectedDisplayTime,callbackTime:now,
+      clockTime:video.currentTime,skewMs:(video.currentTime-metadata.mediaTime)*1000};
+    video.requestVideoFrameCallback(frame);
+  };
+  video.requestVideoFrameCallback(frame);
+}
+function report(){
+  ticks++;
+  const r=video.getBoundingClientRect(), q=video.getVideoPlaybackQuality();
+  ViewportReport.save(JSON.stringify({visibility:document.visibilityState,ticks,events,playError,
+    dpr:devicePixelRatio,video:{x:r.x,y:r.y,width:r.width,height:r.height,
+      time:video.currentTime,duration:video.duration,paused:video.paused,ended:video.ended,
+      muted:video.muted,readyState:video.readyState,networkState:video.networkState,
+      widthPixels:video.videoWidth,heightPixels:video.videoHeight,
+      decodedFrames:video.webkitDecodedFrameCount,droppedFrames:video.webkitDroppedFrameCount,
+      totalFrames:q.totalVideoFrames,videoCallbacks,lastFrame,
+      buffered:Array.from({length:video.buffered.length},(_,i)=>[video.buffered.start(i),video.buffered.end(i)]),
+      error:video.error&&{code:video.error.code,message:video.error.message}}}));
+}
+setInterval(report,250);
+video.play().catch(e=>{playError=String(e);report()});
+</script></body></html>

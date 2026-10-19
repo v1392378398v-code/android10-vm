@@ -1,0 +1,12 @@
+diff --git a/bionic/libm/upstream-freebsd/lib/msun/src/k_sincosl.h b/bionic/libm/upstream-freebsd/lib/msun/src/k_sincosl.h
+--- a/bionic/libm/upstream-freebsd/lib/msun/src/k_sincosl.h
++++ b/bionic/libm/upstream-freebsd/lib/msun/src/k_sincosl.h
+@@ -120,7 +120,7 @@
+ 	if (iy == 0)
+ 		*sn = x + v * (S1 + z * r);
+ 	else
+-		*cs = x - ((z * (y / 2 - v * r) - y) - v * S1);
++		*sn = x - ((z * (y / 2 - v * r) - y) - v * S1);
+ 
+ 	hz = z / 2;
+ 	w = 1 - hz;

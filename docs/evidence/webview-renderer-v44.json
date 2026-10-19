@@ -1,0 +1,56 @@
+{
+  "versionName": "0.2.44-webview-renderer",
+  "versionCode": 54,
+  "rootRequiredByGuest": false,
+  "deviceRootUsedForAutomation": true,
+  "apk": {
+    "path": "artifacts/apk/a10vm-0.2.44-webview-renderer-debug.apk",
+    "download": "/storage/emulated/0/Download/A10VM-0.2.44-webview-renderer.apk",
+    "bytes": 696797964,
+    "sha256": "e7e1825c41b49debd9d62a5695d192235edc6fabf2fee85cce5ad02712b8bad2",
+    "v2SignatureVerified": true,
+    "nativeFilesVerified": 1060,
+    "runtimeDataFilesVerified": 2209,
+    "systemApksVerified": 114,
+    "installed": true
+  },
+  "cause": "PackageManager lookup in isolated WebView renderer before ActivityThread.main",
+  "fix": "Skip application APK-query adaptation when android.os.Process.isIsolated()",
+  "regression": {
+    "isolatedLaunchFailedBeforeFix": true,
+    "isolatedLaunchPassedAfterFix": true,
+    "childZygoteListenerVerified": true,
+    "ordinaryApplicationCodePathsVerified": true,
+    "apkNamespaceVerified": true,
+    "rootRequired": false
+  },
+  "lint": {"Error": 0, "Fatal": 0, "Warning": 3},
+  "device": {"model": "PJZ110", "androidRelease": "16"},
+  "firstDesktopBoot": {
+    "passed": true,
+    "bootSeconds": 9.856,
+    "stabilitySeconds": 3,
+    "launcherDrawn": true,
+    "surfaceOpened": true,
+    "uid": 10698,
+    "capEff": "0000000000000000"
+  },
+  "webview": {
+    "loadingPassed": true,
+    "pages": [
+      {"url": "https://m.v.qq.com/", "httpStatus": 200, "ready": "complete", "loadedImages": 5},
+      {"url": "https://weixin.qq.com/", "httpStatus": 200, "ready": "complete", "loadedImages": 0},
+      {"url": "https://m.bilibili.com/", "httpStatus": 200, "ready": "complete", "loadedImages": 12}
+    ],
+    "javascriptQueriesPassed": true,
+    "processSurvivalPassed": true,
+    "foregroundPixelsVerified": false
+  },
+  "mt": {"passed": true, "drawn": true, "observationSeconds": 5, "crashes": []},
+  "limitations": [
+    "Host foreground changed during screenshot capture; background guest screenshots were black",
+    "Guest session stopped before the supplementary foreground check",
+    "Supplementary desktop startup reached Launcher but foreground Surface check failed after host focus changed",
+    "Other host Android versions, video playback and third-party embedded WebView interactions were not verified"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "filesystemTools": {
+    "version": "1.47.4",
+    "url": "https://mirrors.tuna.tsinghua.edu.cn/termux/termux-packages-24/pool/main/e/e2fsprogs/e2fsprogs_1.47.4_aarch64.deb",
+    "sha256": "0e21bb5a3e1b948f26d6f9be65237bc0b97a5ff464f6ff70a8797095166096f0"
+  },
+  "redroid10": {
+    "repository": "redroid/redroid",
+    "architecture": "arm64",
+    "manifest": "sha256:f41e76f39b5e6343a1608a1c76b117e2f3469f60db068bf8db9b5b6c808724cc",
+    "layer": "sha256:47a4595f19ded855ae0b0045c8926b838576de4ceb4297ca881461fd809b2a81",
+    "bytes": 701673445,
+    "source": "https://github.com/remote-android/platform_manifests/tree/redroid-10.0.0"
+  }
+}

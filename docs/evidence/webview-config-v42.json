@@ -1,0 +1,47 @@
+{
+  "date": "2026-10-10",
+  "versionCode": 42,
+  "versionName": "0.2.32-webview-config",
+  "apk": {
+    "path": "artifacts/apk/a10vm-0.2.32-webview-config-debug.apk",
+    "downloadPath": "/storage/emulated/0/Download/A10VM-0.2.32-webview-config.apk",
+    "bytes": 696772992,
+    "sha256": "ba02c4f1db8ed136821fb90c2154f523644c85760daf068ce736e2e3661b2c32",
+    "v2SignatureVerified": true,
+    "nativeFilesVerified": 1060,
+    "dataFilesVerified": 2209,
+    "systemApksVerified": 114,
+    "lintErrors": 0,
+    "lintFatal": 0,
+    "lintWarnings": 3,
+    "qemuPackaged": false,
+    "tcgPackaged": false,
+    "rfbPackaged": false
+  },
+  "cause": "Goldfish EGL exposed config index zero as a null EGLConfig; Chromium aborted display initialization and its app exited. Configuration selection also returned host GLES3 configurations unsupported by the guest GLES2 decoder.",
+  "fix": "Encode public EGLConfig handles as index + 1, convert back at renderControl calls, validate handles centrally and return zero matches for unsupported guest renderable bits.",
+  "regression": {
+    "before": "GLES2 and GLES3 selections returned count=1, handle=0; the Java probe asserted and WebView reported No suitable EGL configs found for initialization",
+    "after": "GLES3 returned count=0; GLES2 returned count=1, handle=1; egl_config_non_null_handles=1",
+    "finalApkLog": "artifacts/remote-boot/lenovo-config/final-v42/egl-config-check.log",
+    "nativeChecks": "Configuration handles, texture sharing and native video buffers passed on the local GPU"
+  },
+  "deviceVerification": {
+    "adbSerial": "192.168.5.6:37167",
+    "hostSdk": 36,
+    "hostGpu": "Adreno 616",
+    "desktopReport": "artifacts/remote-boot/lenovo-config/final-v42/apk-desktop-report.json",
+    "bootSeconds": 43.579,
+    "hostUid": 10192,
+    "effectiveCapabilities": "0000000000000000",
+    "rootRequiredByGuest": false,
+    "rootUsedForAutomation": false,
+    "dataCleared": false,
+    "webviewReport": "artifacts/webview-viewport/remote-v42/report.json",
+    "pages": ["https://weixin.qq.com/", "https://m.v.qq.com/", "https://m.bilibili.com/"],
+    "pageChecks": "HTTP 200, document complete, visible page and live process for all three URLs",
+    "viaReport": "artifacts/remote-boot/lenovo-config/final-v42/via-report.json",
+    "viaChecks": "User page visible, process alive and no EGL initialization crash"
+  },
+  "coverage": "Native EGL checks on Adreno 830 and 616 with SDK 36; other Android versions and continuous Via video playback remain outside this result. No host model, UID or SDK-specific exception was introduced."
+}

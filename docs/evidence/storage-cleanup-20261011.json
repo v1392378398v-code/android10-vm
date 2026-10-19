@@ -1,0 +1,80 @@
+{
+  "project": "android10-vm",
+  "freeSpaceBeforeKiB": 88060796,
+  "freeSpaceAfterKiB": 235869944,
+  "freeSpaceObservation": "Filesystem values include concurrent host activity",
+  "removed": [
+    "Six completed artifacts/rom-* trial runtimes with no active mappings or mounts",
+    "app/build and guest-runtime/build Gradle intermediates",
+    "app/build/miui-package-cache and ROM trial apk-packager-cache",
+    "Obsolete desktop trial outputs",
+    "Older A10VM installation packages in Download and the duplicate build APK",
+    "Temporary /data/local/tmp/a10vm-hook-maps.apk",
+    "9716 diagnostic files and dangling completed runtime links",
+    "system.new.dat.br and vendor.new.dat.br copies already present in the original ROM ZIP"
+  ],
+  "diagnosticLogicalBytesRemoved": 677707859,
+  "followUp": {
+    "date": "2026-10-12",
+    "deletedFiles": 73,
+    "logicalBytesRemoved": 32376534,
+    "freeSpaceObservedKiB": 248330104,
+    "projectAllocatedKiB": 35784754,
+    "removed": [
+      "Completed credential and Bilibili text captures",
+      "Temporary SDK decompilation and cleanup inventories",
+      "Archived QQ diagnostic logs",
+      "Obsolete Bilibili diagnostic executables and original window library copy",
+      "Generated manifest merger logs"
+    ],
+    "existingTrackedFilesDeleted": 0,
+    "installedGuestDataTouched": false
+  },
+  "finalPass": {
+    "date": "2026-10-12",
+    "deletedFiles": 924,
+    "emptyDirectoriesRemoved": 77,
+    "logicalBytesRemoved": 105367789,
+    "allocatedBytesRemoved": 107454464,
+    "projectAllocatedKiB": 35783825,
+    "projectSizeMeasuredWithDevelopmentRoot": true,
+    "freeSpaceObservedKiB": 235869944,
+    "removed": [
+      "Closed installed-guest top-level diagnostics after checking process file descriptors",
+      "Verified stopped DRM probe from a deleted older APK and its closed log",
+      "Completed v0.2.55 and v0.2.56 startup logs and screenshots",
+      "Temporary Bilibili simpleperf recording in /data/local/tmp",
+      "DEX check logs, Python bytecode caches and generated Gradle reports and classes",
+      "Empty temporary readlink and literal ROOT directories"
+    ],
+    "activeDiagnosticFilesPreserved": 102,
+    "existingTrackedFilesDeleted": 0,
+    "installedGuestDataDirectoriesTouched": false,
+    "newPackageBuildIntermediatesRemovedBeforeFinalPass": true,
+    "structuredEvidencePreserved": true
+  },
+  "preserved": [
+    "All source files and existing worktree changes",
+    "Full project backup and original MIUI ROM ZIP",
+    "MIUI extracted, prepared-v2, raw images, boot image and active build inputs",
+    "Latest MIUI 0.2.56, MIUI 0.2.55 rollback and stock Android 0.2.45 installation packages",
+    "Installed VM and third-party application data",
+    "Active process stdout and stderr files",
+    "Small structured performance reports"
+  ],
+  "miuiApkSha256": "8594979970fb90e281ad75064f6dda26dafacf9d1dee1bd22e7dbfb95eb9196f",
+  "prevention": [
+    "MIUI packaging replaces generated APK and incremental packaging cache directly",
+    "ROM trials remove isolated runtime directories, process logs and PPM captures after stopping child processes",
+    "--keep-runtime explicitly retains a trial runtime for ongoing diagnosis",
+    "--keep-diagnostics explicitly retains trial logs and captures independently of the runtime"
+  ],
+  "validation": {
+    "shellSyntax": "passed",
+    "pythonSyntax": "passed",
+    "diffWhitespace": "passed",
+    "trialCleanupChecks": "5 passed, including setup failure and independent retention options",
+    "currentMiuiApkHash": "matched before duplicate removal",
+    "runtimeRebuildDuringCleanup": false
+  }
+}

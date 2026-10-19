@@ -1,0 +1,99 @@
+{
+  "date": "2026-10-10",
+  "versionName": "0.2.16-gpu-blit",
+  "versionCode": 26,
+  "rootRequired": false,
+  "display": {"width": 1080, "height": 1920, "density": 480, "targetHz": 120},
+  "apk": {
+    "path": "artifacts/apk/a10vm-0.2.16-gpu-blit-debug.apk",
+    "downloadPath": "/storage/emulated/0/Download/A10VM-0.2.16-gpu-blit.apk",
+    "bytes": 415401357,
+    "sha256": "3b43f3879d29f96398466ca781fb48b90e1506e4ac84cbecfdccdfba63b27652",
+    "v2SignatureVerified": true,
+    "nativeFilesVerified": 463,
+    "dataFilesVerified": 826,
+    "systemApksVerified": 79,
+    "jniExportsVerified": 13,
+    "lint": {"Error": 0, "Fatal": 0, "Warning": 3},
+    "qemuPackaged": false,
+    "tcgPackaged": false
+  },
+  "implementation": {
+    "fastPath": "GLES3 glBlitFramebuffer: default framebuffer to shared color texture, format conversion and vertical flip",
+    "fallback": "GLES2 or MSAA uses the existing intermediate-texture shader path",
+    "guestProtocol": "GLES2 unchanged",
+    "stateRestored": ["draw framebuffer", "read framebuffer", "scissor enable"],
+    "sharedTextureOrdering": "Server-side EGL fences for copy-to-root and root-sampling-to-next-write; glFinish fallback when fence extensions are absent"
+  },
+  "regression": {
+    "renderer": "Adreno (TM) 830",
+    "termuxUid": 10373,
+    "directPathCopies": 166,
+    "directRunLegacyMsaaCopies": 18,
+    "legacyRunCopies": 184,
+    "rgbRgbaAlphaPassed": true,
+    "rowOrientationPassed": true,
+    "glStateRestorationPassed": true,
+    "msaaFallbackPassed": true,
+    "concurrentCopyOrderingPassed": true,
+    "presentThenRewriteOrderingPassed": true,
+    "bufferRetirementPassed": true,
+    "guestEglProtocolPassed": true,
+    "grallocComposerYuvPassed": true,
+    "logs": [
+      "artifacts/container/graphics/desktop/presentation-direct.log",
+      "artifacts/container/graphics/desktop/presentation-legacy.log",
+      "artifacts/performance/v26-egl-report.json"
+    ]
+  },
+  "copyBenchmark": {
+    "command": "desktop-presentation-check --benchmark",
+    "width": 1080,
+    "height": 1920,
+    "warmupFrames": 8,
+    "measuredFrames": 120,
+    "completionVerifiedBy": "Synchronous final root pixel readback",
+    "rgbLegacyMsPerFrame": 1.966,
+    "rgbBlitMsPerFrame": 0.585,
+    "rgbaLegacyMsPerFrame": 0.789,
+    "rgbaBlitMsPerFrame": 0.466,
+    "scope": "Clear plus window flush and final GPU drain; not whole-system presentation latency",
+    "log": "artifacts/container/graphics/desktop/copy-benchmark-final.log"
+  },
+  "device": {
+    "retainedDataInstallPassed": true,
+    "hostUid": 10698,
+    "effectiveCapabilities": "0000000000000000",
+    "selinux": "u:r:untrusted_app:s0:c186,c258,c512,c768",
+    "startMethod": "app-service with explicit Fullscreen launch, not management-page click",
+    "bootSeconds": 15.234,
+    "stabilitySeconds": 5,
+    "launcherDrawn": true,
+    "systemServerPid": 20043,
+    "surfaceReplacedWithSameSystemServer": true,
+    "wechatInstallationRetained": true,
+    "rootUsedOnlyForDevelopmentInstallAndCollection": true,
+    "reports": [
+      "artifacts/performance/v26-desktop-boot.json",
+      "artifacts/performance/v26-surface-lifecycle.json",
+      "artifacts/performance/v26-wechat-retained.log"
+    ]
+  },
+  "settingsSwipes": {
+    "script": "tools/measure-desktop-performance.py",
+    "swipes": 8,
+    "swipeDurationMs": 500,
+    "baselineV25": {"fps": 29.12, "medianMs": 33.197, "p95Ms": 58.093, "cpuCores": 1.505},
+    "v26": {"fps": 44.12, "medianMs": 24.893, "p95Ms": 33.197, "cpuCores": 1.475},
+    "v26Repeat": {"fps": 51.45, "medianMs": 16.598, "p95Ms": 33.194, "cpuCores": 1.406},
+    "reports": [
+      "artifacts/performance/v25-pre-blit.json",
+      "artifacts/performance/v26-gpu-blit.json",
+      "artifacts/performance/v26-gpu-blit-repeat.json"
+    ],
+    "scope": "Real SurfaceFlinger present timestamps and same-UID CPU; input-command gaps included, not input-to-photon latency",
+    "limitation": "Host load and temperature are uncontrolled; these samples do not establish stable 120 FPS or app compatibility"
+  },
+  "rollbackApk": "/storage/emulated/0/Download/A10VM-0.2.15-multicore.apk",
+  "nextStep": "Profile remaining real-app stalls in Binder, ART and graphics command round trips"
+}

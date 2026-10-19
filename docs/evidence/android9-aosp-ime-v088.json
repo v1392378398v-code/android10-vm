@@ -1,0 +1,64 @@
+{
+  "date": "2026-10-18",
+  "versionName": "0.2.88-miui12-android9-aosp-ime",
+  "versionCode": 98,
+  "package": "io.a10vm.miui",
+  "hostMinSdk": 28,
+  "guestSdk": 29,
+  "apk": {
+    "bytes": 3189855302,
+    "sha256": "0ff401f529c1be98d9f26dcea206ada2d89f9727ae492f408486e1c84d55ad42",
+    "v2SignatureVerified": true,
+    "nativeFilesVerified": 2631,
+    "runtimeDataFilesVerified": 5152,
+    "systemApksVerified": 320,
+    "exportCopyVerified": true
+  },
+  "checks": {
+    "appLintErrors": 0,
+    "appLintWarnings": 8,
+    "hostApi28StrongImportsVerified": 378,
+    "romStagingTests": 15,
+    "romProfileTests": 6,
+    "keyboardBundlePairAndRepeatability": true,
+    "runtimeIdentityMapping": true
+  },
+  "device": {
+    "model": "PJZ110",
+    "android": 16,
+    "kernel": "6.6",
+    "pageSize": 4096
+  },
+  "desktop": {
+    "passed": true,
+    "bootSeconds": 47.125,
+    "stabilitySeconds": 30,
+    "launcherDrawn": true,
+    "surfaceOpened": true,
+    "inputReady": true,
+    "hostUid": 10326,
+    "effectiveCapabilities": "0",
+    "selinuxDomain": "untrusted_app"
+  },
+  "keyboard": {
+    "package": "com.android.inputmethod.latin",
+    "component": "com.android.inputmethod.latin/.LatinIME",
+    "apkAndNativeLibraryFromSameAuditedImage": true,
+    "textFieldKeyboardScreenshotVerified": true,
+    "userConfirmedWorking": true,
+    "laterUserKeyboardChoicePreserved": true,
+    "independentTypingAssertions": false
+  },
+  "import": {
+    "installedAppSelectionServiceResult": "1/1 imported",
+    "separateSplitApkSessionCompleted": true,
+    "splitFixturePackage": "io.a10vm.fixture.keyboard",
+    "splitFixtureInstalledParts": 2,
+    "fullUiAutomationPassed": false
+  },
+  "limits": {
+    "android9DeviceVerified": false,
+    "lenovoWholeDeviceStabilityVerified": false,
+    "qqWebRetestedInThisIteration": false
+  }
+}

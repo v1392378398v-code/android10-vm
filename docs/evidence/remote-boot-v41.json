@@ -1,0 +1,63 @@
+{
+  "date": "2026-10-10",
+  "versionCode": 41,
+  "versionName": "0.2.31-config-boot",
+  "apk": {
+    "path": "artifacts/apk/a10vm-0.2.31-config-boot-debug.apk",
+    "downloadPath": "/storage/emulated/0/Download/A10VM-0.2.31-config-boot.apk",
+    "bytes": 696978650,
+    "sha256": "f84fe059dc7c597a29eefb59f0700f00d50ddd8a83484fc2cbfde32fb4902092",
+    "verificationReport": "artifacts/container/graphics/native-display-apk-report.json",
+    "v2SignatureVerified": true,
+    "nativeFilesVerified": 1060,
+    "dataFilesVerified": 2209,
+    "systemApksVerified": 114,
+    "lintErrors": 0,
+    "lintFatal": 0,
+    "lintWarnings": 3,
+    "qemuPackaged": false,
+    "tcgPackaged": false,
+    "rfbPackaged": false
+  },
+  "fixes": [
+    {
+      "cause": "Guest PackageManager read the host /config/sdcardfs with an ordinary app UID and crashed when listing returned null",
+      "change": "Map /config into the guest filesystem namespace",
+      "verification": "Five added filesystem regressions failed on the old libraries; all 75 filesystem checks passed after rebuilding"
+    },
+    {
+      "cause": "Guest VINTF declared a vibrator HAL although the host reported no vibrator hardware",
+      "change": "Filter unavailable host HAL declarations using runtime capabilities before hwservicemanager starts",
+      "verification": "HostDeviceManifestTest covers available and unavailable devices, manifest versions, transports and unrelated declarations"
+    },
+    {
+      "cause": "AccountManager opened accounts_de.db before vold callbacks created system-user directories",
+      "change": "Prepare storage for the guest USER_SYSTEM before registering vold, using the existing directory preparation routine",
+      "verification": "Fresh ordinary-UID runtime opened SQLite databases before callbacks; repeated preparation preserved existing data"
+    }
+  ],
+  "remoteDesktop": {
+    "adbSerial": "192.168.5.6:37167",
+    "hostModel": "Lenovo L38111",
+    "hostSdk": 36,
+    "report": "artifacts/remote-boot/lenovo-config/final-v41/apk-desktop-report.json",
+    "screenshot": "artifacts/remote-boot/lenovo-config/final-v41/apk-desktop.png",
+    "startMethod": "UI tap",
+    "bootSeconds": 44.486,
+    "stabilitySeconds": 5,
+    "hostUid": 10192,
+    "effectiveCapabilities": "0000000000000000",
+    "guestRootRequired": false,
+    "rootUsedForInstallOrAutomation": false,
+    "launcherDrawn": true,
+    "surfaceOpened": true,
+    "systemServerAlive": true,
+    "systemUiLaunches": 2,
+    "dataCleared": false,
+    "passed": true
+  },
+  "compatibility": {
+    "strategy": "Use host capabilities and guest framework constants; no host model, UID or SDK-specific exception",
+    "deviceCoverage": "Remote desktop verification on SDK 36 only; other supported host versions remain outside this device result"
+  }
+}

@@ -1,0 +1,21 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application
+        android:allowBackup="false"
+        android:label="A10VM Container Probe">
+        <activity
+            android:name=".SurfaceProbeActivity"
+            android:enabled="${surfaceProbeEnabled}"
+            android:exported="true"
+            android:theme="@android:style/Theme.Material.NoActionBar"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+    <instrumentation
+        android:name=".ProbeInstrumentation"
+        android:functionalTest="true"
+        android:targetPackage="io.a10vm.containerprobe" />
+</manifest>

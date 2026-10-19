@@ -1,0 +1,118 @@
+{
+  "stage": "P2 source-built static Bionic bootstrap",
+  "reportModifiedAt": "2026-10-07T05:57:40+08:00",
+  "report": "artifacts/container/runtime/device/report.json",
+  "reportSha256": "004b1f727860673bb17bf43dab02c348a25aca1ab320d3fe359e1c1cb381bbfc",
+  "passed": true,
+  "completeG1": false,
+  "completeP2": false,
+  "runtimeIntegration": false,
+  "dynamicRuntimeIntegrated": false,
+  "binderImplemented": false,
+  "desktopImplemented": false,
+  "command": "sh container-probe/test-device.sh --local-root --bootstrap",
+  "sources": {
+    "tag": "android-10.0.0_r47",
+    "bionic": "290c0cb5044b643e5d6cbcb1a5b275541ca3a89e",
+    "core": "1dea9a052b7f214c10a77d5ed6ffd3602722a817",
+    "libcxx": "d356ee1683aa5681564c81ad69fe19bc6abd5da5",
+    "libcxxabi": "b599c4d59ebf8d589c82a1d5fd98a6c0a955fe7b",
+    "manifest": "container-probe/runtime/sources.sha256",
+    "manifestSha256": "dbf27e6221fbf279ee1239f7a5b9abb0975f6c89d2d6c4fba69fc3749e5eeaf8",
+    "files": 389,
+    "component": "4a45587d6292cb69900e8933865e9985d1964b5726ee222588617a5e939c9aff",
+    "sourceImageSha256": "fc10aa9478729b1795ede64c0f5b996759262dc6bb43271b19c7d88615a16373",
+    "sourceUnchanged": true
+  },
+  "apk": {
+    "path": "artifacts/container/runtime/probe.apk",
+    "bytes": 1641240,
+    "sha256": "383af5ba77240fa596892cfe04459eaa3585605f99107df9c08c7e527de80fc2",
+    "versionCode": 5,
+    "versionName": "p2-bootstrap",
+    "zipIntegrity": true,
+    "v2SignatureVerified": true,
+    "signers": 1,
+    "nativeFilesVerified": 8,
+    "inputsMatchDeviceReport": true,
+    "uninstalledAfterTest": true,
+    "bundledGuest": false
+  },
+  "device": {
+    "hostSdk": 36,
+    "minSdk": 30,
+    "targetSdk": 35,
+    "pageSize": 4096,
+    "appUid": 10745,
+    "effectiveCapabilities": "0000000000000000",
+    "selinux": "u:r:untrusted_app:s0:c233,c258,c512,c768"
+  },
+  "bootstrap": {
+    "staticBionicBootstrap": true,
+    "realCrtEntry": true,
+    "realElfTls": true,
+    "tlsSegmentAlignment": 64,
+    "threadImplementation": "AOSP pthread_create/join",
+    "propertyInitialization": "AOSP __libc_init_common before executable preinit and constructors",
+    "allocator": "AOSP linker allocator; probe serializes allocator use",
+    "concurrentAllocatorVerified": false,
+    "runs": [
+      {
+        "mode": "reader", "passed": true, "uniqueChecks": 12,
+        "sdkAtPreinit": "29", "sdkAtConstructor": "29", "sdkAtMain": "29",
+        "threadRounds": 2, "pthreadKeyDestructors": 2, "cppThreadLocalDestructors": 2,
+        "ownExecutableOnly": true, "privateReadonlyMappingsPassed": true,
+        "exitFlushVerified": true
+      },
+      {
+        "mode": "missing", "passed": true, "uniqueChecks": 11,
+        "sdkAtPreinit": "", "sdkAtConstructor": "", "sdkAtMain": "",
+        "threadRounds": 2, "pthreadKeyDestructors": 2, "cppThreadLocalDestructors": 2,
+        "ownExecutableOnly": true, "privateReadonlyMappingsPassed": true,
+        "exitFlushVerified": true
+      },
+      {
+        "mode": "relative", "passed": true, "uniqueChecks": 11,
+        "sdkAtPreinit": "", "sdkAtConstructor": "", "sdkAtMain": "",
+        "threadRounds": 2, "pthreadKeyDestructors": 2, "cppThreadLocalDestructors": 2,
+        "ownExecutableOnly": true, "privateReadonlyMappingsPassed": true,
+        "exitFlushVerified": true
+      },
+      {
+        "mode": "incomplete", "passed": true, "uniqueChecks": 11,
+        "sdkAtPreinit": "", "sdkAtConstructor": "", "sdkAtMain": "",
+        "threadRounds": 2, "pthreadKeyDestructors": 2, "cppThreadLocalDestructors": 2,
+        "ownExecutableOnly": true, "privateReadonlyMappingsPassed": true,
+        "exitFlushVerified": true
+      }
+    ]
+  },
+  "native": {
+    "executable": {
+      "path": "artifacts/container/runtime/bin/bootstrap-probe",
+      "bytes": 116192,
+      "sha256": "01068cf23860f71ac30c4b8d3364c8be7d9da63576f1a940688366cc7b7c4473",
+      "elfType": "EXEC", "machine": "AArch64", "interpreter": null, "needed": [],
+      "strongUndefinedSymbols": 0,
+      "weakUndefinedSymbols": ["__loader_add_thread_local_dtor", "__loader_remove_thread_local_dtor"],
+      "repeatBuildHashMatches": true
+    },
+    "archive": {
+      "path": "artifacts/container/runtime/lib/liba10vm-bootstrap.a",
+      "bytes": 516716,
+      "sha256": "1c9a2a2a05d96618c41c7af3d57a5845655d6b7ae02495fc07a821a3ed1e99d6",
+      "objects": 132,
+      "repeatBuildHashMatches": true
+    }
+  },
+  "validation": {
+    "localCases": 4, "deviceCases": 4,
+    "guestLoaderPositiveAndNegativeChecks": true,
+    "uniqueGuestPropertyChecks": 46, "propertyApiCases": 5,
+    "assembleDebug": true, "lintErrors": 0, "lintWarnings": 8,
+    "cleanupRegressionChecks": 6,
+    "hostVersionsTested": [36], "pageSizesTested": [4096],
+    "elapsedMsIsDesktopBootMetric": false
+  },
+  "next": "source-built matching linker and dynamic libc; shared globals, dynamic TLS and properties; then Binder/HwBinder and P3 desktop"
+}

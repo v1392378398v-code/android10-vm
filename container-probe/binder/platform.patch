@@ -1,0 +1,257 @@
+diff --git a/frameworks/native/libs/binder/ProcessState.cpp b/frameworks/native/libs/binder/ProcessState.cpp
+index 63f49dd..3817442 100644
+--- a/frameworks/native/libs/binder/ProcessState.cpp
++++ b/frameworks/native/libs/binder/ProcessState.cpp
+@@ -17,6 +17,7 @@
+ #define LOG_TAG "ProcessState"
+
+ #include <binder/ProcessState.h>
++#include "Driver.h"
+
+ #include <binder/BpBinder.h>
+ #include <binder/IPCThreadState.h>
+@@ -43,11 +44,7 @@
+ #define BINDER_VM_SIZE ((1 * 1024 * 1024) - sysconf(_SC_PAGE_SIZE) * 2)
+ #define DEFAULT_MAX_BINDER_THREADS 15
+
+-#ifdef __ANDROID_VNDK__
+-const char* kDefaultDriver = "/dev/vndbinder";
+-#else
+-const char* kDefaultDriver = "/dev/binder";
+-#endif
++const char* kDefaultDriver = a10binder_default_driver();
+
+ // -------------------------------------------------------------------------
+
+@@ -93,11 +90,6 @@ sp<ProcessState> ProcessState::initWithDriver(const char* driver)
+         LOG_ALWAYS_FATAL("ProcessState was already initialized.");
+     }
+
+-    if (access(driver, R_OK) == -1) {
+-        ALOGE("Binder driver %s is unavailable. Using /dev/binder instead.", driver);
+-        driver = "/dev/binder";
+-    }
+-
+     gProcess = new ProcessState(driver);
+     return gProcess;
+ }
+@@ -181,19 +173,8 @@ bool ProcessState::becomeContextManager(context_check_func checkFunc, void* user
+         mBinderContextCheckFunc = checkFunc;
+         mBinderContextUserData = userData;
+
+-        flat_binder_object obj {
+-            .flags = FLAT_BINDER_FLAG_TXN_SECURITY_CTX,
+-        };
+-
+-        status_t result = ioctl(mDriverFD, BINDER_SET_CONTEXT_MGR_EXT, &obj);
+-
+-        // fallback to original method
+-        if (result != 0) {
+-            android_errorWriteLog(0x534e4554, "121035042");
+-
+-            int dummy = 0;
+-            result = ioctl(mDriverFD, BINDER_SET_CONTEXT_MGR, &dummy);
+-        }
++        int dummy = 0;
++        status_t result = a10binder_ioctl(mDriverFD, BINDER_SET_CONTEXT_MGR, &dummy);
+
+         if (result == 0) {
+             mManagesContexts = true;
+@@ -220,7 +201,7 @@ ssize_t ProcessState::getKernelReferences(size_t buf_count, uintptr_t* buf)
+     size_t count = 0;
+
+     do {
+-        status_t result = ioctl(mDriverFD, BINDER_GET_NODE_DEBUG_INFO, &info);
++        status_t result = a10binder_ioctl(mDriverFD, BINDER_GET_NODE_DEBUG_INFO, &info);
+         if (result < 0) {
+             return -1;
+         }
+@@ -376,7 +357,7 @@ void ProcessState::spawnPooledThread(bool isMain)
+
+ status_t ProcessState::setThreadPoolMaxThreadCount(size_t maxThreads) {
+     status_t result = NO_ERROR;
+-    if (ioctl(mDriverFD, BINDER_SET_MAX_THREADS, &maxThreads) != -1) {
++    if (a10binder_ioctl(mDriverFD, BINDER_SET_MAX_THREADS, &maxThreads) != -1) {
+         mMaxThreads = maxThreads;
+     } else {
+         result = -errno;
+@@ -395,23 +376,23 @@ String8 ProcessState::getDriverName() {
+
+ static int open_driver(const char *driver)
+ {
+-    int fd = open(driver, O_RDWR | O_CLOEXEC);
++    int fd = a10binder_open(driver);
+     if (fd >= 0) {
+         int vers = 0;
+-        status_t result = ioctl(fd, BINDER_VERSION, &vers);
++        status_t result = a10binder_ioctl(fd, BINDER_VERSION, &vers);
+         if (result == -1) {
+             ALOGE("Binder ioctl to obtain version failed: %s", strerror(errno));
+-            close(fd);
++            a10binder_close(fd);
+             fd = -1;
+         }
+         if (result != 0 || vers != BINDER_CURRENT_PROTOCOL_VERSION) {
+           ALOGE("Binder driver protocol(%d) does not match user space protocol(%d)! ioctl() return value: %d",
+                 vers, BINDER_CURRENT_PROTOCOL_VERSION, result);
+-            close(fd);
++            a10binder_close(fd);
+             fd = -1;
+         }
+         size_t maxThreads = DEFAULT_MAX_BINDER_THREADS;
+-        result = ioctl(fd, BINDER_SET_MAX_THREADS, &maxThreads);
++        result = a10binder_ioctl(fd, BINDER_SET_MAX_THREADS, &maxThreads);
+         if (result == -1) {
+             ALOGE("Binder ioctl to set max threads failed: %s", strerror(errno));
+         }
+@@ -439,11 +420,11 @@ ProcessState::ProcessState(const char *driver)
+ {
+     if (mDriverFD >= 0) {
+         // mmap the binder, providing a chunk of virtual address space to receive transactions.
+-        mVMStart = mmap(nullptr, BINDER_VM_SIZE, PROT_READ, MAP_PRIVATE | MAP_NORESERVE, mDriverFD, 0);
++        mVMStart = mmap(nullptr, BINDER_VM_SIZE, PROT_NONE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+         if (mVMStart == MAP_FAILED) {
+             // *sigh*
+             ALOGE("Using %s failed: unable to mmap transaction memory.\n", mDriverName.c_str());
+-            close(mDriverFD);
++            a10binder_close(mDriverFD);
+             mDriverFD = -1;
+             mDriverName.clear();
+         }
+@@ -458,7 +439,7 @@ ProcessState::~ProcessState()
+         if (mVMStart != MAP_FAILED) {
+             munmap(mVMStart, BINDER_VM_SIZE);
+         }
+-        close(mDriverFD);
++        a10binder_close(mDriverFD);
+     }
+     mDriverFD = -1;
+ }
+diff --git a/frameworks/native/libs/binder/IPCThreadState.cpp b/frameworks/native/libs/binder/IPCThreadState.cpp
+index 9a561cb..415eef2 100644
+--- a/frameworks/native/libs/binder/IPCThreadState.cpp
++++ b/frameworks/native/libs/binder/IPCThreadState.cpp
+@@ -40,6 +40,7 @@
+ #include <signal.h>
+ #include <stdio.h>
+ #include <sys/ioctl.h>
++#include "Driver.h"
+ #include <sys/resource.h>
+ #include <unistd.h>
+
+@@ -643,7 +644,7 @@ void IPCThreadState::stopProcess(bool /*immediate*/)
+     flushCommands();
+     int fd = mProcess->mDriverFD;
+     mProcess->mDriverFD = -1;
+-    close(fd);
++    a10binder_close(fd);
+     //kill(getpid(), SIGKILL);
+ }
+
+@@ -972,7 +973,7 @@ status_t IPCThreadState::talkWithDriver(bool doReceive)
+             alog << "About to read/write, write size = " << mOut.dataSize() << endl;
+         }
+ #if defined(__ANDROID__)
+-        if (ioctl(mProcess->mDriverFD, BINDER_WRITE_READ, &bwr) >= 0)
++        if (a10binder_ioctl(mProcess->mDriverFD, BINDER_WRITE_READ, &bwr) >= 0)
+             err = NO_ERROR;
+         else
+             err = -errno;
+@@ -1299,7 +1300,7 @@ void IPCThreadState::threadDestructor(void *st)
+                 self->flushCommands();
+ #if defined(__ANDROID__)
+         if (self->mProcess->mDriverFD > 0) {
+-            ioctl(self->mProcess->mDriverFD, BINDER_THREAD_EXIT, 0);
++            a10binder_ioctl(self->mProcess->mDriverFD, BINDER_THREAD_EXIT, 0);
+         }
+ #endif
+                 delete self;
+diff --git a/frameworks/native/libs/binderthreadstate/IPCThreadStateBase.cpp b/frameworks/native/libs/binderthreadstate/IPCThreadStateBase.cpp
+--- a/frameworks/native/libs/binderthreadstate/IPCThreadStateBase.cpp
++++ b/frameworks/native/libs/binderthreadstate/IPCThreadStateBase.cpp
+@@ -67,5 +67,5 @@
+ IPCThreadStateBase::CallState IPCThreadStateBase::popCurrentState() {
+-    ALOG_ASSERT(mCallStateStack.size > 0);
++    ALOG_ASSERT(mCallStateStack.size() > 0);
+     CallState val = mCallStateStack.top();
+     mCallStateStack.pop();
+     return val;
+diff --git a/system/core/libutils/misc.cpp b/system/core/libutils/misc.cpp
+index f77e189..0bca075 100644
+--- a/system/core/libutils/misc.cpp
++++ b/system/core/libutils/misc.cpp
+@@ -23,7 +23,7 @@
+ #include <utils/Log.h>
+ #include <utils/Vector.h>
+
+-#if defined(__ANDROID__) && !defined(__ANDROID_RECOVERY__)
++#if defined(__ANDROID__) && !defined(__ANDROID_RECOVERY__) && !defined(A10VM_PRIVATE_RUNTIME)
+ #include <dlfcn.h>
+ #include <vndksupport/linker.h>
+ #endif
+@@ -70,7 +70,7 @@ void add_sysprop_change_callback(sysprop_change_callback cb, int priority) {
+ void add_sysprop_change_callback(sysprop_change_callback, int) {}
+ #endif
+
+-#if defined(__ANDROID__) && !defined(__ANDROID_RECOVERY__)
++#if defined(__ANDROID__) && !defined(__ANDROID_RECOVERY__) && !defined(A10VM_PRIVATE_RUNTIME)
+ void (*get_report_sysprop_change_func())() {
+     void (*func)() = nullptr;
+     void* handle = android_load_sphal_library("libutils.so", RTLD_NOW);
+@@ -85,7 +85,7 @@ void (*get_report_sysprop_change_func())() {
+ void report_sysprop_change() {
+     do_report_sysprop_change();
+
+-#if defined(__ANDROID__) && !defined(__ANDROID_RECOVERY__)
++#if defined(__ANDROID__) && !defined(__ANDROID_RECOVERY__) && !defined(A10VM_PRIVATE_RUNTIME)
+     // libutils.so is double loaded; from the default namespace and from the
+     // 'sphal' namespace. Redirect the sysprop change event to the other instance
+     // of libutils.so loaded in the 'sphal' namespace so that listeners attached
+diff --git a/system/core/liblog/config_read.cpp b/system/core/liblog/config_read.cpp
+index 3139f78..51afec9 100644
+--- a/system/core/liblog/config_read.cpp
++++ b/system/core/liblog/config_read.cpp
+@@ -54,7 +54,7 @@ static void __android_log_add_transport(struct listnode* list,
+
+ void __android_log_config_read() {
+ #if (FAKE_LOG_DEVICE == 0)
+-  if ((__android_log_transport == LOGGER_DEFAULT) || (__android_log_transport & LOGGER_LOGD)) {
++  if (false) {
+     extern struct android_log_transport_read logdLoggerRead;
+     extern struct android_log_transport_read pmsgLoggerRead;
+
+diff --git a/system/core/liblog/config_write.cpp b/system/core/liblog/config_write.cpp
+index d454379..e5f1f1c 100644
+--- a/system/core/liblog/config_write.cpp
++++ b/system/core/liblog/config_write.cpp
+@@ -53,7 +53,7 @@ static void __android_log_add_transport(struct listnode* list,
+ }
+
+ void __android_log_config_write() {
+-  if ((__android_log_transport == LOGGER_DEFAULT) || (__android_log_transport & LOGGER_LOGD)) {
++  if (false) {
+ #if (FAKE_LOG_DEVICE == 0)
+     extern struct android_log_transport_write logdLoggerWrite;
+     extern struct android_log_transport_write pmsgLoggerWrite;
+@@ -67,7 +67,7 @@ void __android_log_config_write() {
+ #endif
+   }
+
+-  if (__android_log_transport & LOGGER_STDERR) {
++  if (true) {
+     extern struct android_log_transport_write stderrLoggerWrite;
+
+     /*
+diff --git a/system/core/liblog/logger_write.cpp b/system/core/liblog/logger_write.cpp
+index 7fa3f43..3802bb2 100644
+--- a/system/core/liblog/logger_write.cpp
++++ b/system/core/liblog/logger_write.cpp
+@@ -288,7 +288,7 @@ static int __write_to_log_daemon(log_id_t log_id, struct iovec* vec, size_t nr)
+       ret = __android_log_trylock();
+       m = (EventTagMap*)atomic_load(&tagMap); /* trylock flush cache */
+       if (!m) {
+-        m = android_openEventTagMap(NULL);
++        m = android_openEventTagMap(getenv("A10VM_EVENT_TAG_MAP") ? getenv("A10VM_EVENT_TAG_MAP") : "/private-event-tags-not-configured");
+         if (ret) { /* trylock failed, use local copy, mark for close */
+           f = m;
+         } else {

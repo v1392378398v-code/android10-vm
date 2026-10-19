@@ -1,0 +1,136 @@
+{
+  "stage": "P1a paired Android 10 GL2Encoder to host GLES pbuffer",
+  "verifiedAt": "2026-10-06T15:41:54Z",
+  "passed": true,
+  "sources": {
+    "qemu": "9e4088bf54f2a11dd7898b757c08e2c473315460",
+    "goldfish": "d291bbd969a8cdb7bf9ac6f7d46af5b3d2b6c309",
+    "manifest": "container-probe/graphics/sources.sha256",
+    "manifestSha256": "736335da654b7313dc32a5df0a4cc665a4bc990f308835924885ab8760aa0a26",
+    "sourceFiles": 91,
+    "codec": "79bc98a6ef466afd5c5532154dea300bec7887bc2f2f82bb90542fa9e44212a2"
+  },
+  "apk": {
+    "path": "artifacts/container/graphics/probe.apk",
+    "bytes": 1810489,
+    "sha256": "82f0d3f9a8f47aaccfb029f0beeff0eaef0d850ac582a8eab9b1c54c93fc0e0c",
+    "zipIntegrity": true,
+    "v2SignatureVerified": true,
+    "uninstalledAfterTest": true
+  },
+  "device": {
+    "hostSdk": 36,
+    "minSdk": 30,
+    "targetSdk": 35,
+    "pageSize": 4096,
+    "appUid": 10704
+  },
+  "runtime": {
+    "guest": {
+      "pid": 17661,
+      "uid": 10704,
+      "effectiveCapabilities": "0000000000000000",
+      "selinux": "u:r:untrusted_app:s0:c192,c258,c512,c768",
+      "visibleSdk": 36,
+      "executableFiles": [
+        "liba10vm-a10-libc.so",
+        "liba10vm-a10-libdl.so",
+        "liba10vm-a10-libm.so",
+        "liba10vm-a10-linker.so",
+        "liba10vm-p1-client.so"
+      ],
+      "libraryIsolationPassed": true,
+      "processElapsedMs": 101
+    },
+    "host": {
+      "pid": 17605,
+      "uid": 10704,
+      "effectiveCapabilities": "0000000000000000",
+      "selinux": "u:r:untrusted_app:s0:c192,c258,c512,c768",
+      "egl": "HOST_GL egl=1.5 vendor=Qualcomm renderer=Adreno (TM) 830 version=OpenGL ES 3.2 V@0800.59 (GIT@d0ee14024d, I6b35d10015, 1761145090) (Date:10/22/25)",
+      "processElapsedMs": 169
+    }
+  },
+  "graphics": {
+    "pbuffer": [
+      64,
+      64
+    ],
+    "frames": 32,
+    "verifiedPixels": 64,
+    "packets": 359,
+    "result": "CLIENT_OK frames=32 pixels=64 elapsed_ms=14.942 codec=79bc98a6ef466afd5c5532154dea300bec7887bc2f2f82bb90542fa9e44212a2"
+  },
+  "tests": {
+    "native": [
+      {
+        "name": "stream_and_checksum",
+        "passed": true
+      },
+      {
+        "name": "paired_gpu",
+        "passed": true
+      },
+      {
+        "name": "fingerprint",
+        "passed": true
+      },
+      {
+        "name": "sequence",
+        "passed": true
+      },
+      {
+        "name": "truncated",
+        "passed": true
+      },
+      {
+        "name": "length",
+        "passed": true
+      },
+      {
+        "name": "unknown",
+        "passed": true
+      },
+      {
+        "name": "pixel_layout",
+        "passed": true
+      }
+    ],
+    "cleanup": {
+      "count": 5,
+      "passed": true
+    },
+    "sourceManifest": {
+      "unchangedCachePassed": true,
+      "modifiedCopyRejected": true
+    },
+    "buildAndLint": true,
+    "g1": {
+      "guestLibraryIsolationPassed": true,
+      "hostControlDetected": true,
+      "missingLibcRejected": true,
+      "validatorMissingContextRejected": true,
+      "validatorWrongContextRejected": true
+    }
+  },
+  "boundaries": {
+    "completeG1": false,
+    "privateProperties": false,
+    "surface": false,
+    "input": false,
+    "renderControl": false,
+    "fullGuestEgl": false,
+    "privateBinder": false,
+    "desktop": false,
+    "mainAppBackendChanged": false,
+    "androidColdBootMeasured": false,
+    "desktopLatencyMeasured": false,
+    "downloadedNewRom": false,
+    "rootUsedOnlyForDeveloperInstallAndInstrumentation": true,
+    "changedHostSettings": false
+  },
+  "rawReports": [
+    "artifacts/container/graphics/device/report.json",
+    "artifacts/container/graphics/native-report.json"
+  ]
+}

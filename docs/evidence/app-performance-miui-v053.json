@@ -1,0 +1,71 @@
+{
+  "date": "2026-10-11",
+  "package": "io.a10vm.miui",
+  "versionName": "0.2.53-miui12-incremental-reclaim",
+  "versionCode": 63,
+  "installed": true,
+  "rootRequiredByGuest": false,
+  "applicationDataPreserved": true,
+  "implementation": [
+    "Queue node reclamation only on lifecycle changes instead of scanning the full graph",
+    "Count live handle and death-notification container references",
+    "Preserve strong, weak, pending, context-manager and asynchronous-queue retention",
+    "Separate reclamation into BrokerNodeReclaim and reuse the existing transport and dispatch",
+    "Read the actual wire version in the reply-lifetime fixture and support the MIUI package in startup measurement"
+  ],
+  "checks": {
+    "binderSeparateProcesses": {"passed": true, "checks": 25, "evidence": "artifacts/performance/node-reclaim-binder.log"},
+    "hwbinderSeparateProcesses": {"passed": true, "checks": 16, "evidence": "artifacts/performance/node-reclaim-hwbinder.log"},
+    "reachabilityAndLifecycle": {"passed": true, "zeroCollectionAllocations": true, "fullGraphOracle": true, "asyncBuffers": true, "bothTeardownOrders": true, "evidence": "artifacts/performance/node-reclaim-after.log"},
+    "replyAfterSenderExit": {"passed": true, "evidence": "artifacts/performance/node-reclaim-lifetime.log"},
+    "multipleContexts": {"passed": true, "evidence": "artifacts/performance/node-reclaim-multi-open.log"},
+    "peerSecurityContext": {"passed": true, "evidence": "artifacts/performance/node-reclaim-security.log"},
+    "apkContentsAndSignature": {"passed": true, "evidence": "artifacts/performance/apk-verify-v053.log"},
+    "boot": {"passed": true, "bootSeconds": 19.289, "stabilitySeconds": 5, "systemUiLaunches": 2, "uid": 10326, "capEff": "0000000000000000", "evidence": "artifacts/performance/miui-v053-boot/apk-desktop-report.json"}
+  },
+  "reclaimBenchmark": {
+    "rootedNodes": 12000,
+    "rounds": 300,
+    "before": {"emptyCpuNanosPerCollection": 11695, "populatedCpuNanosPerCollection": 442795, "passed": false},
+    "after": {"emptyCpuNanosPerCollection": 2209, "populatedCpuNanosPerCollection": 531, "passed": true},
+    "maxCpuNanosPerCollection": 50000,
+    "evidence": ["artifacts/performance/node-reclaim-before.log", "artifacts/performance/node-reclaim-after.log"],
+    "limitation": "Thread CPU time for collection only, using real import/trim paths; excludes export, IPC and rendering"
+  },
+  "applicationRestartSamples": {
+    "method": "One force-stop then Activity start -W per application, preserving user data and existing DEX caches",
+    "qqWaitTimeMs": 1279,
+    "wechatWaitTimeMs": 1616,
+    "douyinWaitTimeMs": 2221,
+    "warmReentryWaitTimeMs": {"qq": 25, "wechat": 21, "douyin": 9},
+    "cachedDexMappings": {"qq": 89, "wechat": 18, "douyin": 59},
+    "drawn": true,
+    "sameSystemServerPid": 30821,
+    "evidence": "artifacts/performance/miui-v053-app-startup/report.json",
+    "limitation": "AM WaitTime excludes command setup and the separate drawn check; does not verify first uncached launch or all application features"
+  },
+  "surfaceSamples": {
+    "douyinDuringCpuProfile": {"swipes": 8, "presentFps": 91.11, "intervalP95Ms": 24.895, "intervalMaxMs": 124.474, "cpuCores": 3.401, "evidence": "artifacts/performance/miui-v053-douyin.json"},
+    "douyinAfterCpuProfile": {"swipes": 8, "presentFps": 96.44, "intervalP95Ms": 16.599, "intervalMaxMs": 107.884, "cpuCores": 3.576, "evidence": "artifacts/performance/miui-v053-douyin-final.json"},
+    "miuiHomeAfterForegroundResume": {"swipes": 4, "presentFps": 97.41, "intervalP95Ms": 16.599, "intervalMaxMs": 116.186, "cpuCores": 1.818, "evidence": "artifacts/performance/miui-v053-home-resumed.json"},
+    "excludedHomeAttempt": {"reason": "Host process in do_freezer_trap after user switched to host QQ; no swipe data", "evidence": "artifacts/performance/miui-v053-home-horizontal.json"},
+    "stable120FpsClaimed": false,
+    "limitation": "Surface presents include input-command gaps and idle frames; content, temperature and background load were not fixed"
+  },
+  "activeCpuProfile": {
+    "durationSeconds": 6,
+    "samples": 61514,
+    "collectDeadNodesPercent": 0.02,
+    "dispatchPercent": 2.36,
+    "brokerKernelSpinUnlockPercent": 15.46,
+    "evidence": "artifacts/performance/miui-v053-active-cpu.txt",
+    "limitation": "Profiles the host, two brokers and the Douyin main process; symbol shares are not whole-device power measurements"
+  },
+  "remaining": [
+    "Long presentation intervals remain; no stable 120 FPS or native-equivalent claim",
+    "The resumed home sample does not show an improvement over the previous home sample",
+    "Communication kernel overhead and YUV/RGB conversion remain measured hotspots",
+    "First uncached application launch, cross-device behavior and long-term stability remain pending",
+    "Whole-device power and heat reductions were not demonstrated"
+  ]
+}

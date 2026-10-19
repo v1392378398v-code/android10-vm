@@ -1,0 +1,81 @@
+{
+  "date": "2026-10-11",
+  "package": "io.a10vm.miui",
+  "versionName": "0.2.54-miui12-pixel-pipeline",
+  "versionCode": 64,
+  "installed": true,
+  "rootRequiredByGuest": false,
+  "applicationDataPreserved": true,
+  "pixelConversionBenchmark": {
+    "width": 1080,
+    "height": 1920,
+    "rounds": 40,
+    "beforeRoundTripCpuNanos": 9924691,
+    "afterRoundTripCpuNanos": 1612176,
+    "afterYuvToRgbCpuNanos": 1231511,
+    "afterRgbToYuvCpuNanos": 380665,
+    "maxRoundTripCpuNanos": 2000000,
+    "beforePassed": false,
+    "afterPassed": true,
+    "evidence": ["artifacts/performance/pixel-conversions-before.log", "artifacts/performance/pixel-conversions-final.log"],
+    "limitation": "Thread CPU time for guest conversion only; excludes transport, GPU and application rendering"
+  },
+  "hostPixelTransferBenchmark": {
+    "width": 1080,
+    "height": 1920,
+    "rounds": 20,
+    "beforeCpuNanosPerRoundTrip": 13671161,
+    "afterCpuNanosPerRoundTrip": 2360627,
+    "beforeScratchAllocations": 40,
+    "afterScratchAllocations": 0,
+    "pixelsVerified": true,
+    "beforePassed": false,
+    "afterPassed": true,
+    "evidence": ["artifacts/performance/pixel-transfer-before.log", "artifacts/performance/pixel-transfer-after.log"],
+    "limitation": "Actual upload and readback thread CPU time after warmup; excludes guest, transport and whole-device power"
+  },
+  "checks": {
+    "pixelCorrectness": {"passed": true, "layoutChecks": 108, "randomYuvChecks": 72, "evidence": "artifacts/performance/pixel-conversions-final-correctness.log"},
+    "realGuestEgl": {"passed": true, "evidence": "artifacts/performance/pixel-transfer-egl.log"},
+    "presentationAndResourceLifetime": {"passed": true, "evidence": "artifacts/performance/pixel-transfer-presentation.log"},
+    "apkContentsAndSignature": {"passed": true, "evidence": "artifacts/performance/apk-verify-v054.log"},
+    "boot": {"passed": true, "bootSeconds": 24.173, "stabilitySeconds": 5, "uid": 10326, "capEff": "0000000000000000", "evidence": "artifacts/performance/miui-v054-boot/apk-desktop-report.json"}
+  },
+  "applicationRestartSamples": {
+    "qqWaitTimeMs": 2323,
+    "wechatWaitTimeMs": 2239,
+    "douyinWaitTimeMs": 2623,
+    "warmReentryWaitTimeMs": {"qq": 5, "wechat": 5, "douyin": 5},
+    "evidence": "artifacts/performance/miui-v054-app-startup/report.json",
+    "limitation": "One force-stop and reentry per application, preserving data and existing DEX caches; excludes first uncached launch and automation setup"
+  },
+  "surfaceSamples": {
+    "douyinPresentFps": [82.18, 83.63, 99.38],
+    "douyinIntervalP95Ms": [24.898, 24.894, 16.598],
+    "douyinIntervalMaxMs": [91.291, 66.382, 33.195],
+    "douyinCpuCores": [3.501, 4.357, 3.316],
+    "swipesPerDouyinSample": 8,
+    "miuiHome": {"swipes": 4, "presentFps": 115.65, "intervalP95Ms": 8.3, "intervalMaxMs": 24.893, "cpuCores": 3.056},
+    "stable120FpsClaimed": false,
+    "fpsSpreadBelow15Percent": false,
+    "evidence": ["artifacts/performance/miui-v054-douyin.json", "artifacts/performance/miui-v054-douyin-2.json", "artifacts/performance/miui-v054-douyin-3.json", "artifacts/performance/miui-v054-home-horizontal.json"],
+    "limitation": "Surface presents include input-command gaps; content, temperature and background load were not fixed"
+  },
+  "backgroundServiceFailure": {
+    "observed": "getpwuid_r failed: errno 0 (Success) during java.lang.System initialization",
+    "romFirstApiLevel": 28,
+    "stagedFirstApiLevel": 29,
+    "beforeReproduction": "artifacts/performance/oem-accounts-before.json",
+    "foregroundWindowSeconds": 15.344,
+    "findDeviceLaunchesDuringWindow": 2,
+    "updaterLaunchesDuringWindow": 2,
+    "evidence": "artifacts/performance/miui-v054-service-restarts.json",
+    "excluded": "artifacts/performance/miui-v054-service-restarts-unchecked.json did not verify foreground state"
+  },
+  "remaining": [
+    "Application restart timings did not improve over v053",
+    "Douyin repeat-sample FPS variation exceeds the 15 percent gate",
+    "Legacy OEM account lookup and authentic ROM first API level are fixed in the next candidate",
+    "No stable 120 FPS, native-equivalent or whole-device heat reduction claim"
+  ]
+}

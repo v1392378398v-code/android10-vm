@@ -1,0 +1,279 @@
+{
+  "stage": "P1b paired Android 10 GL2Encoder to host GLES Surface",
+  "reportModifiedAt": "2026-10-07T04:12:15+08:00",
+  "passed": true,
+  "command": "A10VM_WINDOW_MS=60000 A10VM_WINDOW_TOUCHES=100 sh container-probe/test-device.sh --local-root --surface",
+  "sources": {
+    "qemu": "9e4088bf54f2a11dd7898b757c08e2c473315460",
+    "goldfish": "d291bbd969a8cdb7bf9ac6f7d46af5b3d2b6c309",
+    "manifest": "container-probe/graphics/sources.sha256",
+    "manifestSha256": "736335da654b7313dc32a5df0a4cc665a4bc990f308835924885ab8760aa0a26",
+    "codec": "60d48fea6fc0532c68fabab6b40e62de1ef5b94eafb91b8d20a6d6c008ec4606",
+    "sourceImageSha256": "fc10aa9478729b1795ede64c0f5b996759262dc6bb43271b19c7d88615a16373",
+    "sourceUnchanged": true
+  },
+  "apk": {
+    "path": "artifacts/container/graphics/probe.apk",
+    "bytes": 2077372,
+    "sha256": "cd16be124ebb8caa7ce96c8db6bedbb79aa33f99d148592d4ac494106d443dea",
+    "zipIntegrity": true,
+    "nativeFilesVerified": 8,
+    "bundledGuest": false,
+    "versionCode": 3,
+    "versionName": "p1b-window",
+    "v2SignatureVerified": true,
+    "signers": 1,
+    "inputsMatchDeviceReport": true,
+    "uninstalledAfterTest": true
+  },
+  "device": {
+    "hostSdk": 36,
+    "minSdk": 30,
+    "targetSdk": 35,
+    "pageSize": 4096,
+    "appUid": 10739
+  },
+  "nativeInputs": [
+    {
+      "name": "liba10vm-a10-linker.so",
+      "source": "/system/apex/com.android.runtime.debug/bin/linker64",
+      "sha256": "802a1aaa864490a465fa67e0dcdd014e0468db7745c13f502ced515bdffcfa3f",
+      "bytes": 1594504,
+      "needed": []
+    },
+    {
+      "name": "liba10vm-a10-libc.so",
+      "source": "/system/apex/com.android.runtime.debug/lib64/bionic/libc.so",
+      "sha256": "cc611247c66d6af9824690f4ab0ffb0a176dc5329737587867da99e5cb79606b",
+      "bytes": 1230880,
+      "needed": [
+        "ld-android.so",
+        "libdl.so"
+      ]
+    },
+    {
+      "name": "liba10vm-a10-libm.so",
+      "source": "/system/apex/com.android.runtime.debug/lib64/bionic/libm.so",
+      "sha256": "2535e2cf8b494eecae1adf4080c4d1e90e5785aa6678cbde26cecf766ba4155d",
+      "bytes": 229376,
+      "needed": [
+        "libc.so"
+      ]
+    },
+    {
+      "name": "liba10vm-a10-libdl.so",
+      "source": "/system/apex/com.android.runtime.debug/lib64/bionic/libdl.so",
+      "sha256": "975b5f56014aee297b0c4875d7c377c9b09368d7f74fbdf1d72a20f806da0960",
+      "bytes": 14016,
+      "needed": [
+        "ld-android.so"
+      ]
+    },
+    {
+      "name": "liba10vm-g1-payload.so",
+      "source": "container-probe/native/payload.c",
+      "sha256": "1959dd2cb50fe207a0e8cffb5eb534fb1e8dffddb546a0e5fb7a8adba43fe8e0",
+      "bytes": 9496,
+      "needed": [
+        "libdl.so",
+        "libm.so",
+        "libc.so"
+      ]
+    },
+    {
+      "name": "liba10vm-p1-client.so",
+      "sha256": "7cc396199e33fc2644f912cbee1474a145bb92ba600bc8de593863a1d8ac8f68",
+      "bytes": 1042536,
+      "needed": [
+        "libdl.so",
+        "libm.so",
+        "libc.so"
+      ]
+    },
+    {
+      "name": "liba10vm-p1-host.so",
+      "sha256": "382e7112e5a9d21f4173bd26c2526e57aca739d4e86f3eed0b2ccba7dee23399",
+      "bytes": 401776,
+      "needed": [
+        "libEGL.so",
+        "libGLESv2.so",
+        "libdl.so",
+        "libm.so",
+        "libc.so"
+      ]
+    },
+    {
+      "name": "liba10vm-p1-window.so",
+      "sha256": "c4197e1f59d1d9e9a5e46d133893a0e52f25f35f44cc35845c9f4738a4b14bfe",
+      "bytes": 508304,
+      "needed": [
+        "libEGL.so",
+        "libGLESv2.so",
+        "libandroid.so",
+        "libdl.so",
+        "libm.so",
+        "libc.so"
+      ]
+    }
+  ],
+  "runtime": {
+    "guestBefore": {
+      "pid": 32051,
+      "uid": 10739,
+      "effectiveCapabilities": "0000000000000000",
+      "selinux": "u:r:untrusted_app:s0:c227,c258,c512,c768",
+      "visibleSdk": 36,
+      "identityPassed": true,
+      "libraryIsolationPassed": true,
+      "executableFiles": [
+        "liba10vm-a10-libc.so",
+        "liba10vm-a10-linker.so",
+        "liba10vm-a10-libdl.so",
+        "liba10vm-a10-libm.so",
+        "liba10vm-p1-client.so"
+      ]
+    },
+    "guestAfter": {
+      "pid": 32051,
+      "uid": 10739,
+      "effectiveCapabilities": "0000000000000000",
+      "selinux": "u:r:untrusted_app:s0:c227,c258,c512,c768",
+      "visibleSdk": 36,
+      "identityPassed": true,
+      "libraryIsolationPassed": true,
+      "executableFiles": [
+        "liba10vm-a10-libc.so",
+        "liba10vm-a10-linker.so",
+        "liba10vm-a10-libdl.so",
+        "liba10vm-a10-libm.so",
+        "liba10vm-p1-client.so"
+      ]
+    },
+    "host": {
+      "pid": 31573,
+      "uid": 10739,
+      "effectiveCapabilities": "0000000000000000",
+      "selinux": "u:r:untrusted_app:s0:c227,c258,c512,c768",
+      "gpu": "EGL 1.5 / Qualcomm / Adreno (TM) 830"
+    },
+    "cleanup": {
+      "forcedStop": false,
+      "stopWriteSucceeded": true,
+      "error": "",
+      "guestAlive": false,
+      "guestExit": 0
+    },
+    "endMarkers": [
+      "CLIENT_WINDOW_STOP_RECEIVED sequence=100",
+      "CLIENT_WINDOW_DONE frames=1861 input=100",
+      "identity_stage=exit"
+    ]
+  },
+  "measurement": {
+    "durationMs": 60008.62628,
+    "requestedDurationMs": 60000,
+    "resolution": [
+      360,
+      640
+    ],
+    "targetHz": 30,
+    "frames": 1800,
+    "frameIntervalCount": 1799,
+    "frameIntervalP95Ms": 34.825937,
+    "injectionToSurfaceSampleP95Ms": 76.25776,
+    "probeBudgetPassed": true,
+    "fullDurationAndInputCount": true,
+    "inputSamples": 100,
+    "firstSurfaceSampleMs": 740.270469,
+    "frameIntervalClock": "eglSwapBuffers return",
+    "inputClock": "control injection to PixelCopy surface sample",
+    "rebuildClock": "surface restoration to compositor screenshot sample"
+  },
+  "rebuilds": {
+    "count": 10,
+    "guestPidUnchanged": true,
+    "composedPixelsVerified": true,
+    "restoreToComposedSampleMinMs": 93.294219,
+    "restoreToComposedSampleMaxMs": 182.210104
+  },
+  "tests": {
+    "native": [
+      {
+        "name": "stream_and_checksum",
+        "passed": true
+      },
+      {
+        "name": "paired_gpu",
+        "passed": true
+      },
+      {
+        "name": "fingerprint",
+        "passed": true
+      },
+      {
+        "name": "sequence",
+        "passed": true
+      },
+      {
+        "name": "truncated",
+        "passed": true
+      },
+      {
+        "name": "length",
+        "passed": true
+      },
+      {
+        "name": "unknown",
+        "passed": true
+      },
+      {
+        "name": "pixel_layout",
+        "passed": true
+      }
+    ],
+    "g1": {
+      "guestLibraryIsolationPassed": true,
+      "hostControlDetected": true,
+      "missingLibcRejected": true,
+      "validatorMissingContextRejected": true,
+      "validatorWrongContextRejected": true
+    },
+    "p1a": true,
+    "installCleanup": {
+      "count": 6,
+      "passed": true
+    },
+    "jvm": {
+      "count": 34,
+      "failed": 0
+    },
+    "buildAndLint": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 8
+    }
+  },
+  "boundaries": {
+    "completeG1": false,
+    "loaderFromSource": false,
+    "privateProperties": false,
+    "privateBinder": false,
+    "fullGuestEgl": false,
+    "renderControl": false,
+    "desktop": false,
+    "physicalDisplayLatencyMeasured": false,
+    "androidColdBootMeasured": false,
+    "mainAppContainerBackendImplemented": false,
+    "rootUsedOnlyForDeveloperInstallAndInstrumentation": true
+  },
+  "rawReports": [
+    {
+      "path": "artifacts/container/graphics/window/device/report.json",
+      "sha256": "6f9333ae70f87d755a2c9f706b80f374a2a2a54beb06bbae786806b51b09a4f0"
+    },
+    {
+      "path": "artifacts/container/graphics/native-report.json",
+      "sha256": "60720ae9dd25fcf3bec9429bea48259c04df42f47dfad81dc844ab1c9b7ec955"
+    }
+  ]
+}

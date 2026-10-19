@@ -1,0 +1,96 @@
+{
+  "date": "2026-10-12",
+  "package": "io.a10vm.miui",
+  "versionName": "0.2.56-miui12-class-index-credentials",
+  "versionCode": 66,
+  "installed": true,
+  "applicationDataPreserved": true,
+  "rootRequiredByGuest": false,
+  "implementation": [
+    "Index read-only DEX class definitions by type without changing DexFile ABI or class order",
+    "Release class indices before DEX writes and on object destruction; preserve linear lookup for small or writable DEX",
+    "Start the ROM fdpp daemon with ROM arguments and guest identity",
+    "Report unsupported hardware credentials through the actual ROM SDK callbacks instead of waiting for a missing service"
+  ],
+  "bilibiliBefore": {
+    "versionCode": 65,
+    "component": "tv.danmaku.bili/.MainActivityV2",
+    "coldWaitTimeMs": 4732,
+    "warmWaitTimeMs": 18,
+    "cachedDexMappings": 40,
+    "startupSampleSeconds": 10,
+    "applicationCpuSamples": 4660,
+    "findClassDefSelfPercent": 6.97,
+    "findTypeIdSelfPercent": 4.53,
+    "evidence": "artifacts/performance/miui-v055-bilibili-profile/report.json"
+  },
+  "bilibiliAfter": {
+    "versionCode": 66,
+    "component": "tv.danmaku.bili/.MainActivityV2",
+    "coldWaitTimeMs": 4785,
+    "warmWaitTimeMs": 10,
+    "cachedDexMappings": 40,
+    "startupSampleSeconds": 10,
+    "applicationCpuSamples": 4794,
+    "findClassDefSelfPercentBelow": 0.1,
+    "findTypeIdSelfPercent": 5.24,
+    "evidence": "artifacts/performance/miui-v056-bilibili-startup/report.json",
+    "limitation": "One cold and one warm launch per version; whole-app cold launch improvement was not observed"
+  },
+  "installedBoot": {
+    "passed": true,
+    "bootSeconds": 25.063,
+    "launcherDrawn": true,
+    "systemServerAlive": true,
+    "kernelUid": 10326,
+    "capEff": "0000000000000000",
+    "evidence": "artifacts/performance/miui-v056-boot/apk-desktop-report.json"
+  },
+  "classLookupChecks": {
+    "passed": true,
+    "classes": 4096,
+    "types": 8192,
+    "linearNanos": 2336,
+    "indexedNanos": 49,
+    "unsortedDefinitions": true,
+    "concurrentReaders": 4,
+    "writableDexAndIndexRebuild": true,
+    "smallAndEmptyDex": true,
+    "maxValidTypeIndex": true,
+    "dexCacheIntegrityCasesPassed": 14,
+    "evidence": "artifacts/container/dex-cache/class-lookup-report.json",
+    "limitation": "Native lookup hotspot improved; installed cold launch remained approximately 4.8 seconds"
+  },
+  "credentialChecks": {
+    "passed": true,
+    "missingServiceReproduced": true,
+    "unsupportedCallbacksCompleted": true,
+    "elapsedMs": 14,
+    "existingEndpointPreserved": true,
+    "fdppRegisteredAndAlive": true,
+    "kernelUid": 10373,
+    "capEff": "0000000000000000",
+    "temporaryRuntimeAndRawLogsRemoved": true,
+    "evidence": "artifacts/performance/credential-capabilities.json"
+  },
+  "xiaomiAccount": {
+    "loginFirstScreenDrawn": true,
+    "firstScreenWaitTimeMs": 1192,
+    "installedCredentialCallbackElapsedMs": 20,
+    "passwordLoginCompleted": false,
+    "remainingFailure": "FindDevice service ANR leaves a null Provider cursor and crashes password login",
+    "evidence": "docs/evidence/xiaomi-account-device-info.json"
+  },
+  "apk": {
+    "path": "/storage/emulated/0/Download/A10VM-MIUI12-1080x2160-v0.2.56.apk",
+    "bytes": 3181400518,
+    "sha256": "8594979970fb90e281ad75064f6dda26dafacf9d1dee1bd22e7dbfb95eb9196f",
+    "v2SignatureVerified": true,
+    "nativeFilesVerified": 2628,
+    "runtimeDataFilesVerified": 5147,
+    "systemApksVerified": 319,
+    "qemuTcgRfbPackaged": false
+  },
+  "rawDiagnosticsRemovedAfterEvidenceCapture": true,
+  "status": "Built and installed; DEX lookup hotspot reduced, cold launch and FindDevice initialization still need work"
+}

@@ -1,0 +1,16 @@
+diff --git a/bionic/libc/bionic/bionic_systrace.cpp b/bionic/libc/bionic/bionic_systrace.cpp
+--- a/bionic/libc/bionic/bionic_systrace.cpp
++++ b/bionic/libc/bionic/bionic_systrace.cpp
+@@ -18,7 +18,7 @@
+ #include <errno.h>
+ #include <fcntl.h>
+-#include <stdio.h>
++#include <async_safe/log.h>
+ #include <stdlib.h>
+@@ -81,7 +81,7 @@ void bionic_trace_begin(const char* message) {
+   int length = strlen(message);
+   char buf[length + WRITE_OFFSET];
+-  size_t len = snprintf(buf, length + WRITE_OFFSET, "B|%d|%s", getpid(), message);
++  size_t len = async_safe_format_buffer(buf, length + WRITE_OFFSET, "B|%d|%s", getpid(), message);
+ 
+   // Tracing may stop just after checking property and before writing the message.

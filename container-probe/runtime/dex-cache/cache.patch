@@ -1,0 +1,76 @@
+diff --git a/libartbase/base/zip_archive.h b/libartbase/base/zip_archive.h
+--- a/libartbase/base/zip_archive.h
++++ b/libartbase/base/zip_archive.h
+@@ -34,4 +34,5 @@
+ struct ZipEntry;
+ typedef ZipArchive* ZipArchiveHandle;
++int GetFileDescriptor(const ZipArchiveHandle archive);
+ 
+ namespace art {
+@@ -100,4 +101,5 @@
+   ZipEntry* Find(const char* name, std::string* error_msg) const;
++  int GetFd() const { return ::GetFileDescriptor(handle_); }
+ 
+   ~ZipArchive();
+ 
+diff --git a/libdexfile/dex/art_dex_file_loader.cc b/libdexfile/dex/art_dex_file_loader.cc
+--- a/libdexfile/dex/art_dex_file_loader.cc
++++ b/libdexfile/dex/art_dex_file_loader.cc
+@@ -35,4 +35,5 @@
+ #include "dex/dex_file_verifier.h"
+ #include "dex/standard_dex_file.h"
++#include "DexArchiveCache.h"
+ 
+ namespace art {
+@@ -402,3 +403,6 @@
+-  MemMap map;
+-  if (zip_entry->IsUncompressed()) {
++  DexArchiveCache cache(zip_archive.GetFd(), entry_name, zip_entry->GetCrc32(),
++                        zip_entry->GetUncompressedLength());
++  MemMap map = cache.Read(location);
++  const bool cache_hit = map.IsValid();
++  if (!cache_hit && zip_entry->IsUncompressed()) {
+     if (!zip_entry->IsAlignedTo(alignof(DexFile::Header))) {
+@@ -441,4 +445,4 @@
+                                                  kNoOatDexFile,
+-                                                 verify,
+-                                                 verify_checksum,
++                                                 verify && !cache_hit,
++                                                 verify_checksum && !cache_hit,
+                                                  error_msg,
+@@ -475,3 +479,6 @@
+   *error_code = DexFileLoaderErrorCode::kNoError;
++  if (!cache_hit && verify && verify_checksum) {
++    cache.Publish(dex_file->Begin(), dex_file->Size());
++  }
+   return dex_file;
+ }
+diff --git a/libdexfile/dex/dex_file.cc b/libdexfile/dex/dex_file.cc
+--- a/libdexfile/dex/dex_file.cc
++++ b/libdexfile/dex/dex_file.cc
+@@ -38,3 +38,4 @@
+ #include "standard_dex_file.h"
+ #include "utf-inl.h"
++#include "DexClassIndex.h"
+
+ namespace art {
+@@ -89,3 +90,4 @@
+ bool DexFile::EnableWrite() const {
++  ForgetClassIndex(*this);
+   CHECK(container_.get() != nullptr);
+   return container_->EnableWrite();
+ }
+@@ -144,3 +146,4 @@
+ DexFile::~DexFile() {
++  ForgetClassIndex(*this);
+   // We don't call DeleteGlobalRef on dex_object_ because we're only called by DestroyJavaVM, and
+   // that's only called after DetachCurrentThread, which means there's no JNIEnv. We could
+@@ -212,3 +215,7 @@
+ const ClassDef* DexFile::FindClassDef(dex::TypeIndex type_idx) const {
+   size_t num_class_defs = NumClassDefs();
++  if (num_class_defs >= 64 && num_class_defs < 65536 && NumTypeIds() <= 65535 &&
++      GetContainer() != nullptr && IsReadOnly()) {
++    return FindIndexedClassDef(*this, type_idx);
++  }
+   // Fast path for rare no class defs case.
+   if (num_class_defs == 0) {

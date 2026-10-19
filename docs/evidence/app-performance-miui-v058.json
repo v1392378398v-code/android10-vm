@@ -1,0 +1,129 @@
+{
+  "date": "2026-10-12",
+  "package": "io.a10vm.miui",
+  "versionName": "0.2.58-miui12-scheduling",
+  "versionCode": 68,
+  "installed": true,
+  "applicationDataPreserved": true,
+  "rootRequiredByGuest": false,
+  "deviceRootUsedForAutomation": true,
+  "implementation": [
+    "Skip Binder Rearm for write-only operations; preserve pending poll readiness",
+    "Combine the last command and read only when Hello advertises CommandRead support",
+    "Cache the actual host UID; retain process and thread starttime checks",
+    "Parse proc stat directly using a reused buffer and two-field result",
+    "Reuse the LMKD packet ByteBuffer and remove the write-only priority copy",
+    "Wait for fresh boot markers and compare the latest system server PID"
+  ],
+  "apk": {
+    "path": "/storage/emulated/0/Download/A10VM-MIUI12-1080x2160-v0.2.58.apk",
+    "bytes": 3181402254,
+    "sha256": "b6c86a7a1b227abd9da5a4ce1728c434db2aebbd7664be5deb40c6a8f7febe33",
+    "v2SignatureVerified": true,
+    "nativeFilesVerified": 2628,
+    "runtimeDataFilesVerified": 5147,
+    "systemApksVerified": 319,
+    "qemuPackaged": false,
+    "tcgPackaged": false,
+    "lint": {"Error": 0, "Fatal": 0, "Warning": 3}
+  },
+  "checks": {
+    "binderDriverRequests": {
+      "passed": true,
+      "writeOnlyCommands": 1000,
+      "beforeWriteOnlyRearms": 1000,
+      "afterWriteOnlyRearms": 0,
+      "combinedReads": 1,
+      "legacyCombinedReads": 0,
+      "legacySeparateReads": 1,
+      "beforeWriteOnlyMicroseconds": 37006,
+      "afterWriteOnlyMicroseconds": 13675,
+      "evidence": "artifacts/performance/miui-v058-driver-requests.log",
+      "limitation": "Independent local peer; demonstrates request counts and protocol compatibility, not whole-app latency"
+    },
+    "scheduling": {
+      "passed": true,
+      "cachedNice": 10,
+      "serviceNice": 5,
+      "renderThreadRestoredNice": -4,
+      "samePriorityThreadOverridePreserved": true,
+      "procStatComparedWithKernel": true,
+      "threadNameIncludesSpaceAndClosingParenthesis": true,
+      "evidence": "artifacts/performance/miui-v058-scheduling.log"
+    },
+    "boot": {
+      "passed": true,
+      "startMethod": "app-service",
+      "bootSeconds": 20.271,
+      "stabilitySeconds": 5,
+      "systemServerPid": 9544,
+      "uid": 10326,
+      "capEff": "0000000000000000",
+      "systemUiLaunches": 2,
+      "surfaceOpened": true,
+      "evidence": "artifacts/performance/miui-v058-boot/apk-desktop-report.json"
+    },
+    "display": {
+      "passed": true,
+      "width": 1080,
+      "height": 2160,
+      "refreshHz": 120.00001,
+      "densityDpi": 480,
+      "previousOverrideDensityDpi": 411,
+      "appliedThroughGuestSystemBinder": true,
+      "evidence": "artifacts/performance/miui-v058-display-final.log"
+    }
+  },
+  "applicationRestartSamples": {
+    "method": "One force-stop and Activity start -W per application; existing user data and DEX caches retained",
+    "beforeWaitTimeMs": {"bilibili": 4946, "qq": 2647, "wechat": 1976, "douyin": 2573},
+    "afterWaitTimeMs": {"bilibili": 4616, "qq": 2208, "wechat": 1307, "douyin": 2448},
+    "afterWarmWaitTimeMs": {"bilibili": 7, "qq": 9, "wechat": 20, "douyin": 11},
+    "afterCachedDexMappings": {"bilibili": 40, "qq": 89, "wechat": 23, "douyin": 55},
+    "drawn": true,
+    "sampleDensityDpi": 411,
+    "sameSystemServerPid": 9544,
+    "evidence": "artifacts/performance/miui-v058-app-startup/report.json",
+    "beforeEvidence": [
+      "artifacts/performance/miui-v056-startup-before/report.json",
+      "artifacts/performance/miui-v056-big-apps-before/report.json"
+    ],
+    "limitation": "Single samples; WaitTime excludes command setup and separate drawn checks. First uncached launch and all application features are not covered"
+  },
+  "surfaceSamples": {
+    "scenario": "Douyin alternating six 500ms vertical swipes",
+    "v056": {"presentFps": 93.88, "p95Ms": 16.598, "maxMs": 99.581, "cpuCores": 3.530, "uidProcesses": 103},
+    "v057": {"presentFps": 101.17, "p95Ms": 16.594, "maxMs": 33.187, "cpuCores": 3.558, "uidProcesses": 92},
+    "v058": {"presentFps": 97.06, "p95Ms": 16.597, "maxMs": 116.160, "cpuCores": 3.191, "uidProcesses": 110},
+    "versionComparisonDensityDpi": 411,
+    "gate": {"minFps": 110, "maxP95Ms": 16.7, "passed": false, "p95Passed": true},
+    "stable120FpsClaimed": false,
+    "wholeDeviceHeatReductionClaimed": false,
+    "evidence": [
+      "artifacts/performance/miui-v056-scroll-before.json",
+      "artifacts/performance/miui-v057-binder-scroll.json",
+      "artifacts/performance/miui-v058-scroll.json"
+    ],
+    "limitation": "Surface presentation includes command gaps; network content, thermal state and background process count are not controlled"
+  },
+  "finalDisplaySurfaceSample": {
+    "densityDpi": 480,
+    "swipes": 6,
+    "presentFps": 88.38,
+    "p95Ms": 24.891,
+    "maxMs": 149.360,
+    "cpuCores": 4.044,
+    "uidProcesses": 108,
+    "minFpsGatePassed": false,
+    "maxP95GatePassed": false,
+    "evidence": "artifacts/performance/miui-v058-scroll-480dpi.json",
+    "limitation": "Display configuration and video content differ from the version comparison; no direct reduction claim"
+  },
+  "remaining": [
+    "Douyin still has long frame intervals and misses the 110 FPS gate",
+    "Bilibili cold launch still takes about 4.6 seconds",
+    "Xiaomi account login remains incomplete; see xiaomi-account-device-info.json",
+    "First uncached launch, cross-device and long-term performance remain unverified"
+  ],
+  "nextStep": "Profile the Bilibili cold-start phase and identify the remaining long-frame source"
+}

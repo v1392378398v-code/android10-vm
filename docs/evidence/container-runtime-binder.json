@@ -1,0 +1,75 @@
+{
+  "stage": "P2 Android 10 private Binder API",
+  "date": "2026-10-07",
+  "report": "artifacts/container/runtime/binder/device/report.json",
+  "reportSha256": "b771c8c729e4f255460906625571257559253d67fc422029226a3a8a3bf22e45",
+  "nativeReport": "artifacts/container/runtime/binder/local-report.json",
+  "nativeReportSha256": "047dbd0ad16764b0dfb1c4c7a97009f5fd00933bb07cf79bac330196d1370117",
+  "inputManifest": "container-probe/build/prepared/assets/binder-inputs.json",
+  "inputManifestSha256": "2b9c92aef0d781f195fb115bed1bbae527b5ff8fe7b299887e807b55105f55fd",
+  "passed": true,
+  "completeG2": false,
+  "sourceBuilt": true,
+  "sources": {
+    "tag": "android-10.0.0_r47",
+    "frameworksNative": "013eb744f289c70e6d3fe180500d9a414ac55539",
+    "systemCore": "1dea9a052b7f214c10a77d5ed6ffd3602722a817",
+    "component": "04af11a7967cd8a1806d3577114fbc155941ae64267120df3931c40d681d0e29",
+    "verifiedInputFiles": 16,
+    "requiredClientChecks": 24
+  },
+  "apk": {
+    "path": "artifacts/container/runtime/binder/probe.apk",
+    "bytes": 3751216,
+    "sha256": "664f5e511bc6533b8c9986528ff9f83424045fb0abc5ce590baf34c9d2a3725a",
+    "versionCode": 10,
+    "versionName": "p2-hidl-values",
+    "minSdk": 30,
+    "targetSdk": 35,
+    "nativeAbi": "arm64-v8a",
+    "v2SignatureVerified": true,
+    "signers": 1,
+    "zipalign4Verified": true,
+    "zipalign16kVerified": false
+  },
+  "device": {
+    "hostSdk": 36,
+    "pageSize": 4096,
+    "appUid": 10764,
+    "ordinaryAppUid": true,
+    "localRootTransport": true,
+    "uninstalledAfterTest": true
+  },
+  "binder": {
+    "passed": true,
+    "clientChecksPassed": 24,
+    "lifecycleChecks": {
+      "registryContext": true,
+      "serviceRegistered": true
+    },
+    "resourcesReclaimed": true,
+    "finalStats": [0, 0, 0, 0, 0, 0, 0, 0, 90, 65, 24, 155, 3, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    "workDirectoryRemoved": true,
+    "brokerDisconnectNormalExit": true,
+    "processUidMatchesApp": true,
+    "registryExitCodeAfterIntentionalTermination": 143
+  },
+  "validation": {
+    "nativeChecks": 24,
+    "deviceChecks": 24,
+    "cleanupRegressionTests": 9,
+    "assembleDebug": true,
+    "lintErrors": 0,
+    "lintWarnings": 8,
+    "apkV2Signature": true,
+    "zipalign4": true,
+    "zipalign16k": false,
+    "nativeDiagnosticsRemoved": true
+  },
+  "limitations": [
+    "completeG2 remains false",
+    "Binder transport is an application Unix socket and does not exercise the host kernel driver",
+    "BINDER_BUFFER_FLAG_REF is not supported by the shared transport"
+  ],
+  "next": "ART, system composition, and full Android 10 desktop"
+}

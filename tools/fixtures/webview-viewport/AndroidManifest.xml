@@ -1,0 +1,14 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="io.a10vm.fixture.webview">
+    <uses-sdk android:minSdkVersion="29" android:targetSdkVersion="29" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <application android:label="WebView viewport test" android:allowBackup="false"
+        android:usesCleartextTraffic="true" android:hardwareAccelerated="true">
+        <activity android:name=".ViewportActivity" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>

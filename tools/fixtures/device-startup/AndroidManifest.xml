@@ -1,0 +1,5 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="io.a10vm.devicecheck">
+    <uses-sdk android:minSdkVersion="30" android:targetSdkVersion="35" />
+    <application android:label="A10VM device check" android:debuggable="true" />
+    <instrumentation android:name="io.a10vm.devicecheck.StartupCheck" android:targetPackage="io.a10vm.miui" />
+</manifest>

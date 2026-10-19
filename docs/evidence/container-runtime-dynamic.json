@@ -1,0 +1,172 @@
+{
+  "stage": "P2 source-built linker and dynamic Bionic",
+  "reportModifiedAt": "2026-10-07T18:02:49+08:00",
+  "report": "artifacts/container/runtime/dynamic/device/report.json",
+  "reportSha256": "f1ac0595aa025b29eedc1d16a22c965a0c93323a613041276644e97d1f6fad74",
+  "passed": true,
+  "completeG1": false,
+  "completeP2": false,
+  "loaderFromSource": true,
+  "dynamicRuntimeIntegrated": true,
+  "binderImplemented": false,
+  "desktopImplemented": false,
+  "command": "sh container-probe/test-device.sh --local-root --dynamic",
+  "sources": {
+    "tag": "android-10.0.0_r47",
+    "bionic": "290c0cb5044b643e5d6cbcb1a5b275541ca3a89e",
+    "core": "1dea9a052b7f214c10a77d5ed6ffd3602722a817",
+    "libcxx": "d356ee1683aa5681564c81ad69fe19bc6abd5da5",
+    "libcxxabi": "b599c4d59ebf8d589c82a1d5fd98a6c0a955fe7b",
+    "zlib": "73968beb892091e38d611e4ca559b8580226c86b",
+    "jemalloc": "8129245231d25fdcd829e00fda895d177d552cdf",
+    "build": "475fb5e5aa709812a799c2c411568b3cd12bf50e",
+    "linkerManifest": "container-probe/runtime/dynamic/sources.sha256",
+    "linkerManifestSha256": "d81fa874ebdf1229e3b68b08256bee1d0a03c8267f6a4c22e28533a17eea9eeb",
+    "linkerManifestRecords": 607,
+    "libcManifest": "container-probe/runtime/dynamic/libc-sources.sha256",
+    "libcManifestSha256": "0ddb194a95e44376a3464200fc7c4440b95204b0e5d9c129532418174f0c7a5a",
+    "libcManifestRecords": 1233,
+    "component": "44898414cd200d63fff859afb99013889d551fe2f750990b2c152ba85f209a4a",
+    "sharedLibcSelectedSources": 718,
+    "sourceImageSha256": "fc10aa9478729b1795ede64c0f5b996759262dc6bb43271b19c7d88615a16373",
+    "sourceUnchanged": true
+  },
+  "apk": {
+    "path": "artifacts/container/runtime/dynamic/probe.apk",
+    "bytes": 2661855,
+    "sha256": "5ab48c9707ea595ecea0afc2b6b7416a0952fd40b47e65c3aea7a7cfcdb60bf0",
+    "versionCode": 6,
+    "versionName": "p2-dynamic",
+    "zipIntegrity": true,
+    "v2SignatureVerified": true,
+    "signers": 1,
+    "nativeFilesVerified": 13,
+    "inputsMatchDeviceReport": true,
+    "uninstalledAfterTest": true,
+    "bundledGuest": false
+  },
+  "device": {
+    "hostSdk": 36,
+    "minSdk": 30,
+    "targetSdk": 35,
+    "pageSize": 4096,
+    "appUid": 10769,
+    "effectiveCapabilities": "0000000000000000",
+    "selinux": "u:r:untrusted_app:s0:c1,c259,c512,c768"
+  },
+  "dynamic": {
+    "configurationEnvironment": "A10VM_LD_CONFIG",
+    "sharedGlobalsVerified": true,
+    "loaderLibcAddressesAndMappingsVerified": true,
+    "realElfTls": true,
+    "tlsSegmentAlignment": 64,
+    "allocator": "AOSP jemalloc",
+    "concurrentAllocatorVerified": true,
+    "allocatorWorkers": 4,
+    "allocatorRoundsPerWorker": 64,
+    "dynamicTlsExistingThreadVerified": true,
+    "dynamicTlsRounds": 2,
+    "threadLocalDestructorPinsDso": true,
+    "dsoUnloadsAfterThreadExit": true,
+    "exitFlushVerified": true,
+    "propertyInitialization": "AOSP executable preinit before dynamic libc constructor; private SDK 29 at executable constructor/main",
+    "forkExec": {
+      "parentForksChild": true,
+      "childUsesSourceLinkerExecve": true,
+      "childPropertiesAndRuntimeVerified": true,
+      "waitpidExitCode": 0,
+      "completeGenericExecIntegration": false
+    },
+    "runs": [
+      {
+        "mode": "reader", "passed": true, "uniqueChecks": 23,
+        "sdkAtPreinit": "", "sdkAtConstructor": "29", "sdkAtMain": "29",
+        "guestLibraryIsolationPassed": true, "privateReadonlyMappingsPassed": true,
+        "readonlyPropertyMaps": 12, "exitCode": 0, "elapsedMs": 101
+      },
+      {
+        "mode": "missing", "passed": true, "uniqueChecks": 23,
+        "sdkAtPreinit": "", "sdkAtConstructor": "", "sdkAtMain": "",
+        "guestLibraryIsolationPassed": true, "privateReadonlyMappingsPassed": true,
+        "readonlyPropertyMaps": 0, "exitCode": 0, "elapsedMs": 101
+      },
+      {
+        "mode": "relative", "passed": true, "uniqueChecks": 23,
+        "sdkAtPreinit": "", "sdkAtConstructor": "", "sdkAtMain": "",
+        "guestLibraryIsolationPassed": true, "privateReadonlyMappingsPassed": true,
+        "readonlyPropertyMaps": 0, "exitCode": 0, "elapsedMs": 101
+      },
+      {
+        "mode": "incomplete", "passed": true, "uniqueChecks": 23,
+        "sdkAtPreinit": "", "sdkAtConstructor": "", "sdkAtMain": "",
+        "guestLibraryIsolationPassed": true, "privateReadonlyMappingsPassed": true,
+        "readonlyPropertyMaps": 0, "exitCode": 0, "elapsedMs": 101
+      }
+    ],
+    "rejected": [
+      {"mode": "missing-config", "passed": true, "exitCode": 134},
+      {"mode": "relative-config", "passed": true, "exitCode": 134},
+      {"mode": "bad-config", "passed": true, "exitCode": 134},
+      {"mode": "missing-libc", "passed": true, "exitCode": 1}
+    ]
+  },
+  "native": {
+    "artifactScope": "historical tested APK; current runtime build paths have since been rebuilt",
+    "linker": {
+      "archive": "artifacts/container/runtime/dynamic/probe.apk",
+      "entry": "lib/arm64-v8a/liba10vm-source-linker.so",
+      "bytes": 780768,
+      "sha256": "b2cb50a34f20f62ee5cb066d112eac7c178731bcdfa97ca8ac6f330d3d0c9127",
+      "elfType": "DYN", "machine": "AArch64", "soname": "ld-android.so",
+      "interpreter": null, "needed": [], "undefinedSymbols": 0,
+      "repeatBuildHashMatches": true
+    },
+    "libc": {
+      "archive": "artifacts/container/runtime/dynamic/probe.apk",
+      "entry": "lib/arm64-v8a/liba10vm-source-libc.so",
+      "bytes": 1290216,
+      "sha256": "57b102e45e87467ea9a60dbd78afa35fc835884313ba15444cbdc14d5a6f2d13",
+      "needed": ["libdl.so", "ld-android.so"], "repeatBuildHashMatches": true
+    },
+    "libdl": {
+      "archive": "artifacts/container/runtime/dynamic/probe.apk",
+      "entry": "lib/arm64-v8a/liba10vm-source-libdl.so",
+      "bytes": 11480,
+      "sha256": "e9b5a9b44b634efc60f7fd8f6fa36aa6598bb808e8d3455d108ddf0bd02ab371",
+      "needed": ["ld-android.so"], "repeatBuildHashMatches": true
+    },
+    "executable": {
+      "archive": "artifacts/container/runtime/dynamic/probe.apk",
+      "entry": "lib/arm64-v8a/liba10vm-p2-dynamic.so",
+      "bytes": 22880,
+      "sha256": "62217dcfed319ffcc8bc958a8eeff6675ec1a36db9f0de44da24978c9893a2f3",
+      "launch": "explicit private source linker invocation",
+      "repeatBuildHashMatches": true
+    },
+    "tlsModule": {
+      "archive": "artifacts/container/runtime/dynamic/probe.apk",
+      "entry": "lib/arm64-v8a/liba10vm-tls-test.so",
+      "bytes": 7272,
+      "sha256": "69ff4e6166244fd82bfef7f3a8c44f2088b990ba20226e32d3ff3b3c1e7ee1f9",
+      "repeatBuildHashMatches": true
+    }
+  },
+  "validation": {
+    "localCases": 4, "localLoadFailures": 4,
+    "deviceCases": 4, "deviceLoadFailures": 4,
+    "guestLoaderPositiveAndNegativeChecks": true,
+    "uniqueGuestPropertyChecks": 46, "propertyApiCases": 5, "staticBootstrapCases": 4,
+    "assembleDebug": true, "lintErrors": 0, "lintWarnings": 8,
+    "cleanupRegressionChecks": 7,
+    "hostVersionsTested": [36], "pageSizesTested": [4096],
+    "execChainDeviceCases": 4,
+    "elapsedMsIsDesktopBootMetric": false
+  },
+  "limitations": [
+    "platform debuggerd signal collection not integrated",
+    "private property set service and timezone/Unicode companion inputs pending",
+    "general path/exec/APEX and virtual identity adaptation pending; explicit source-linker fork/exec child test passes",
+    "Binder/HwBinder, ART and full Android 10 desktop pending"
+  ],
+  "next": "general path/exec/APEX and virtual identity integration, then ART/system services and P3 desktop"
+}

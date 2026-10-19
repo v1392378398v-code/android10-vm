@@ -1,0 +1,102 @@
+{
+  "gate": "G1-stage0-native-elf",
+  "passed": true,
+  "completeG1": false,
+  "privatePropertiesImplemented": false,
+  "loaderFromSource": false,
+  "hostSdk": 36,
+  "targetSdk": 35,
+  "appUid": 10701,
+  "pageSize": 4096,
+  "guestLibraryIsolationPassed": true,
+  "hostControlDetected": true,
+  "missingLibcRejected": true,
+  "validatorMissingContextRejected": true,
+  "validatorWrongContextRejected": true,
+  "apk": {
+    "path": "artifacts/container/g1-stage0/probe.apk",
+    "sha256": "b0c4829640fa308b24277141d2ef91308c7f18b59f50698589c7a6a4ce8f2ed5",
+    "bytes": 1300194
+  },
+  "inputs": {
+    "sourceImageSha256": "fc10aa9478729b1795ede64c0f5b996759262dc6bb43271b19c7d88615a16373",
+    "declaredGuestSdk": 29,
+    "sourceUnchanged": true,
+    "loaderFromSource": false,
+    "files": [
+      {
+        "name": "liba10vm-a10-linker.so",
+        "source": "/system/apex/com.android.runtime.debug/bin/linker64",
+        "sha256": "802a1aaa864490a465fa67e0dcdd014e0468db7745c13f502ced515bdffcfa3f",
+        "bytes": 1594504,
+        "needed": []
+      },
+      {
+        "name": "liba10vm-a10-libc.so",
+        "source": "/system/apex/com.android.runtime.debug/lib64/bionic/libc.so",
+        "sha256": "cc611247c66d6af9824690f4ab0ffb0a176dc5329737587867da99e5cb79606b",
+        "bytes": 1230880,
+        "needed": [
+          "ld-android.so",
+          "libdl.so"
+        ]
+      },
+      {
+        "name": "liba10vm-a10-libm.so",
+        "source": "/system/apex/com.android.runtime.debug/lib64/bionic/libm.so",
+        "sha256": "2535e2cf8b494eecae1adf4080c4d1e90e5785aa6678cbde26cecf766ba4155d",
+        "bytes": 229376,
+        "needed": [
+          "libc.so"
+        ]
+      },
+      {
+        "name": "liba10vm-a10-libdl.so",
+        "source": "/system/apex/com.android.runtime.debug/lib64/bionic/libdl.so",
+        "sha256": "975b5f56014aee297b0c4875d7c377c9b09368d7f74fbdf1d72a20f806da0960",
+        "bytes": 14016,
+        "needed": [
+          "ld-android.so"
+        ]
+      },
+      {
+        "name": "liba10vm-g1-payload.so",
+        "source": "container-probe/native/payload.c",
+        "sha256": "1959dd2cb50fe207a0e8cffb5eb534fb1e8dffddb546a0e5fb7a8adba43fe8e0",
+        "bytes": 9496,
+        "needed": [
+          "libdl.so",
+          "libm.so",
+          "libc.so"
+        ]
+      }
+    ]
+  },
+  "guest": {
+    "exitCode": 0,
+    "executableFiles": [
+      "liba10vm-g1-payload.so",
+      "liba10vm-a10-libm.so",
+      "liba10vm-a10-linker.so",
+      "liba10vm-a10-libc.so",
+      "liba10vm-a10-libdl.so"
+    ],
+    "observations": [
+      "uid=10701",
+      "euid=10701",
+      "cap_eff=0000000000000000",
+      "selinux=u:r:untrusted_app:s0:c189,c258,c512,c768",
+      "visible_sdk=36",
+      "host_liblog_loaded=0",
+      "probe_complete=1"
+    ]
+  },
+  "hostControl": {
+    "exitCode": 0
+  },
+  "missingLibc": {
+    "exitCode": 1,
+    "timedOut": false,
+    "output": "CANNOT LINK EXECUTABLE \"/data/app/~~L3ZSugbnCb86fr_s4tG0jQ==/io.a10vm.containerprobe-KfNUoXB_Zzj6XquYlwAFuw==/lib/arm64/liba10vm-g1-payload.so\": library \"libc.so\" not found\n"
+  }
+}

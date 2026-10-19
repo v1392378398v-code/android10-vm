@@ -1,0 +1,89 @@
+{
+  "date": "2026-10-10",
+  "versionName": "0.2.21-app-compat",
+  "versionCode": 31,
+  "rootRequired": false,
+  "display": {"width": 1080, "height": 1920, "density": 480, "targetHz": 120},
+  "apk": {
+    "path": "artifacts/apk/a10vm-0.2.21-app-compat-debug.apk",
+    "downloadPath": "/storage/emulated/0/Download/A10VM-0.2.21-app-compat.apk",
+    "bytes": 697909945,
+    "sha256": "dedc2e586311a4ee73c7c4e6f328e49da7e2a974031551839ff5bf63b299f38e",
+    "v2SignatureVerified": true,
+    "nativeFilesVerified": 1060,
+    "runtimeDataFilesVerified": 2209,
+    "systemAndOverlayApksVerified": 114,
+    "lint": {"Error": 0, "Fatal": 0, "Warning": 3},
+    "qemuPackaged": false,
+    "tcgPackaged": false,
+    "rfbPackaged": false
+  },
+  "systemImage": {
+    "sourcePath": "artifacts/guest/android10-display-v4.raw",
+    "sourceSha256": "fc10aa9478729b1795ede64c0f5b996759262dc6bb43271b19c7d88615a16373",
+    "sourcePaths": 4463,
+    "missingPaths": 0,
+    "systemBinPaths": 390,
+    "restoredFiles": 1976,
+    "restoredBytes": 691197198,
+    "nativeLinks": 1263,
+    "preservedNativeInputs": 460,
+    "mutableDataPreserved": true,
+    "hostSensorManifestVerified": true,
+    "unbridgedGnssManifestExcluded": true
+  },
+  "device": {
+    "retainedDataInstallPassed": true,
+    "bootMethod": "App foreground service, not UI tap",
+    "bootSeconds": 7.902,
+    "hostUid": 10698,
+    "guestCapEff": "0000000000000000",
+    "selinuxDomain": "untrusted_app",
+    "launcherDrawn": true,
+    "surfaceOpened": true,
+    "systemServerPid": 7612,
+    "stabilitySeconds": 5,
+    "systemImagePathsReadBack": 4463,
+    "nativeShellPassed": true,
+    "toyboxLinksAndPropertiesPassed": true,
+    "packageManagerShellScriptPassed": true,
+    "deviceRootUsedForAutomation": true
+  },
+  "applications": {
+    "mt": {"package": "bin.mt.plus", "startupPassed": true, "drawn": true, "observedSeconds": 10},
+    "douyin": {
+      "package": "com.ss.android.ugc.aweme",
+      "startupPassed": false,
+      "observedSeconds": 60,
+      "error": "libinterstellar.so JNI_OnLoad failure leads to DyImageFastPluginClassLoader NoClassDefFoundError",
+      "systemServerAlive": true
+    }
+  },
+  "fixes": [
+    "Restore immutable image paths using a separate inventory while preserving runtime overrides",
+    "Guest shebang execution and /bin, /sbin, /product_services path mapping",
+    "Encode .bc and .gz asset names and restore original names through installPath",
+    "Keep Binder client buffers alive through DSO and process exit handlers",
+    "Do not advertise sensor 2.0 or GNSS HALs without matching running services"
+  ],
+  "evidence": [
+    "artifacts/app-compat/v31-final-system-image.log",
+    "artifacts/app-compat/v31-final-build.log",
+    "artifacts/app-compat/v31-final-apk-verify.log",
+    "artifacts/app-compat/v31-final-desktop.log",
+    "artifacts/app-compat/v31-final-system-tools.log",
+    "artifacts/app-compat/v31-final-mt/report.json",
+    "artifacts/app-compat/v31-final-mt/mt.png",
+    "artifacts/app-compat/v31-final-douyin/report.json",
+    "artifacts/app-compat/v31-final-douyin/douyin-application-7612-47.log",
+    "artifacts/app-compat/v31-gnss-red.log",
+    "artifacts/app-compat/v31-gnss-desktop-red.log",
+    "artifacts/app-compat/v31-binder-exit-red.log",
+    "artifacts/app-compat/v31-binder-exit-green.log"
+  ],
+  "remaining": [
+    "Fix Douyin native plugin initialization separately from immutable image restoration",
+    "GNSS, camera, microphone, Bluetooth and full keystore bridge acceptance remains separate",
+    "No new steady-state FPS or input-to-photon latency measurement in this iteration"
+  ]
+}

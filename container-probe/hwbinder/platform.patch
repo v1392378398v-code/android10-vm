@@ -1,0 +1,151 @@
+diff --git a/system/libhwbinder/ProcessState.cpp b/system/libhwbinder/ProcessState.cpp
+--- a/system/libhwbinder/ProcessState.cpp
++++ b/system/libhwbinder/ProcessState.cpp
+@@ -28,6 +28,7 @@
+ 
+ #include <private/binder/binder_module.h>
+ #include <hwbinder/Static.h>
++#include "Driver.h"
+ 
+ #include <errno.h>
+ #include <fcntl.h>
+@@ -167,19 +168,8 @@
+         mBinderContextCheckFunc = checkFunc;
+         mBinderContextUserData = userData;
+ 
+-        flat_binder_object obj {
+-            .flags = FLAT_BINDER_FLAG_TXN_SECURITY_CTX,
+-        };
+-
+-        status_t result = ioctl(mDriverFD, BINDER_SET_CONTEXT_MGR_EXT, &obj);
+-
+-        // fallback to original method
+-        if (result != 0) {
+-            android_errorWriteLog(0x534e4554, "121035042");
+-
+-            int dummy = 0;
+-            result = ioctl(mDriverFD, BINDER_SET_CONTEXT_MGR, &dummy);
+-        }
++        int dummy = 0;
++        status_t result = a10binder_ioctl(mDriverFD, BINDER_SET_CONTEXT_MGR, &dummy);
+ 
+         if (result == 0) {
+             mManagesContexts = true;
+@@ -205,7 +195,7 @@
+     size_t count = 0;
+ 
+     do {
+-        status_t result = ioctl(mDriverFD, BINDER_GET_NODE_DEBUG_INFO, &info);
++        status_t result = a10binder_ioctl(mDriverFD, BINDER_GET_NODE_DEBUG_INFO, &info);
+         if (result < 0) {
+             return -1;
+         }
+@@ -230,7 +220,7 @@
+ 
+     info.handle = handle;
+ 
+-    status_t result = ioctl(mDriverFD, BINDER_GET_NODE_INFO_FOR_REF, &info);
++    status_t result = a10binder_ioctl(mDriverFD, BINDER_GET_NODE_INFO_FOR_REF, &info);
+ 
+     if (result != OK) {
+         return -1;
+@@ -376,6 +366,6 @@
+     size_t kernelMaxThreads = threadsToAllocate;
+ 
+     AutoMutex _l(mLock);
+-    if (ioctl(mDriverFD, BINDER_SET_MAX_THREADS, &kernelMaxThreads) == -1) {
++    if (a10binder_ioctl(mDriverFD, BINDER_SET_MAX_THREADS, &kernelMaxThreads) == -1) {
+         ALOGE("Binder ioctl to set max threads failed: %s", strerror(errno));
+         return -errno;
+@@ -397,27 +387,25 @@
+ 
+ static int open_driver()
+ {
+-    int fd = open("/dev/hwbinder", O_RDWR | O_CLOEXEC);
++    int fd = a10binder_open(a10binder_default_hwbinder_driver());
+     if (fd >= 0) {
+         int vers = 0;
+-        status_t result = ioctl(fd, BINDER_VERSION, &vers);
++        status_t result = a10binder_ioctl(fd, BINDER_VERSION, &vers);
+         if (result == -1) {
+             ALOGE("Binder ioctl to obtain version failed: %s", strerror(errno));
+-            close(fd);
++            a10binder_close(fd);
+             fd = -1;
+         }
+         if (result != 0 || vers != BINDER_CURRENT_PROTOCOL_VERSION) {
+           ALOGE("Binder driver protocol(%d) does not match user space protocol(%d)!", vers, BINDER_CURRENT_PROTOCOL_VERSION);
+-            close(fd);
++            a10binder_close(fd);
+             fd = -1;
+         }
+         size_t maxThreads = DEFAULT_MAX_BINDER_THREADS;
+-        result = ioctl(fd, BINDER_SET_MAX_THREADS, &maxThreads);
++        result = a10binder_ioctl(fd, BINDER_SET_MAX_THREADS, &maxThreads);
+         if (result == -1) {
+             ALOGE("Binder ioctl to set max threads failed: %s", strerror(errno));
+         }
+-    } else {
+-        ALOGW("Opening '/dev/hwbinder' failed: %s\n", strerror(errno));
+     }
+     return fd;
+ }
+@@ -441,11 +429,11 @@
+ {
+     if (mDriverFD >= 0) {
+         // mmap the binder, providing a chunk of virtual address space to receive transactions.
+-        mVMStart = mmap(nullptr, mMmapSize, PROT_READ, MAP_PRIVATE | MAP_NORESERVE, mDriverFD, 0);
++        mVMStart = mmap(nullptr, mMmapSize, PROT_NONE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+         if (mVMStart == MAP_FAILED) {
+             // *sigh*
+             ALOGE("Mmapping /dev/hwbinder failed: %s\n", strerror(errno));
+-            close(mDriverFD);
++            a10binder_close(mDriverFD);
+             mDriverFD = -1;
+         }
+     }
+@@ -460,7 +448,7 @@
+         if (mVMStart != MAP_FAILED) {
+             munmap(mVMStart, mMmapSize);
+         }
+-        close(mDriverFD);
++        a10binder_close(mDriverFD);
+     }
+     mDriverFD = -1;
+ }
+diff --git a/system/libhwbinder/IPCThreadState.cpp b/system/libhwbinder/IPCThreadState.cpp
+--- a/system/libhwbinder/IPCThreadState.cpp
++++ b/system/libhwbinder/IPCThreadState.cpp
+@@ -42,5 +42,6 @@
+ #include <sys/ioctl.h>
+ #include <sys/resource.h>
+ #include <unistd.h>
++#include "Driver.h"
+ 
+ #if LOG_NDEBUG
+@@ -617,6 +618,6 @@
+     flushCommands();
+     int fd = mProcess->mDriverFD;
+     mProcess->mDriverFD = -1;
+-    close(fd);
++    a10binder_close(fd);
+     //kill(getpid(), SIGKILL);
+ }
+@@ -943,7 +944,7 @@
+             alog << "About to read/write, write size = " << mOut.dataSize() << endl;
+         }
+ #if defined(__ANDROID__)
+-        if (ioctl(mProcess->mDriverFD, BINDER_WRITE_READ, &bwr) >= 0)
++        if (a10binder_ioctl(mProcess->mDriverFD, BINDER_WRITE_READ, &bwr) >= 0)
+             err = NO_ERROR;
+         else
+             err = -errno;
+@@ -1297,7 +1298,7 @@
+                 self->flushCommands();
+ #if defined(__ANDROID__)
+         if (self->mProcess->mDriverFD > 0) {
+-            ioctl(self->mProcess->mDriverFD, BINDER_THREAD_EXIT, 0);
++            a10binder_ioctl(self->mProcess->mDriverFD, BINDER_THREAD_EXIT, 0);
+         }
+ #endif
+                 delete self;

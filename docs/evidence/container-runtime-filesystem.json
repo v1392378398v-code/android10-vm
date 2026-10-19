@@ -1,0 +1,75 @@
+{
+  "stage": "G1 rootless guest paths and exec subgate",
+  "date": "2026-10-08",
+  "passed": true,
+  "rootRequired": false,
+  "apkRunVerified": false,
+  "desktopVerified": false,
+  "completeG1": false,
+  "local": {
+    "command": "python3 container-probe/runtime/filesystem/test-native.py",
+    "report": "artifacts/container/runtime/filesystem/local-report.json",
+    "reportSha256": "a1efcf732b343642d76048c3cfff3a0eef9ad1f9e8fcf2f5d861cf6e4145052d",
+    "checks": 29,
+    "exitCode": 0,
+    "ordinaryUid": 10373,
+    "parentPid": 19981,
+    "childPid": 19982,
+    "identityVerifiedSeparately": true,
+    "effectiveCapabilities": "0000000000000000",
+    "selinux": "u:r:untrusted_app_27:s0:c117,c257,c512,c768",
+    "executableMappingsPerProcess": 4,
+    "executableMappingClosure": ["source-linker64", "filesystem-probe", "libc.so", "libdl.so"],
+    "readonlyPropertyMappingsPerProcess": 6,
+    "readonlyPropertyMappingFiles": {"property_info": 2, "properties_serial": 2, "a10vm_private_prop": 2},
+    "validatorNegativeCases": {
+      "child-euid": true,
+      "child-capabilities": true,
+      "child-missing-context": true,
+      "host-libc": true
+    }
+  },
+  "runtimeRegression": {
+    "staticBootstrapCases": 4,
+    "dynamicPropertyCases": 4,
+    "dynamicChecksPerCase": 23,
+    "dynamicLoadFailures": 4,
+    "dynamicReport": "artifacts/container/runtime/dynamic/local-report.json",
+    "dynamicReportSha256": "5e68fda395bd070bccae42361c468809ac89baee5069f58d020004982d406faf",
+    "cleanupChecks": 10,
+    "passed": true
+  },
+  "apk": {
+    "path": "artifacts/container/runtime/filesystem/probe.apk",
+    "versionCode": 11,
+    "versionName": "g1-rootless-filesystem",
+    "bytes": 2581083,
+    "sha256": "1781904d8478c2eb09750e83a538c6ab27484888053b6a168542dfc016c1592b",
+    "assembleDebug": true,
+    "lintErrors": 0,
+    "lintWarnings": 8,
+    "v2SignatureVerified": true,
+    "zipIntegrityVerified": true,
+    "inputManifestsVerified": 5,
+    "nativeFilesVerified": 14
+  },
+  "inputs": {
+    "manifest": "container-probe/build/prepared/assets/filesystem-inputs.json",
+    "manifestSha256": "49036b1f805b79af86a6c4cde8ac3a798659f38469752fcf691b3ab0e9623b70",
+    "component": "36739a340f2dd33377079e859b3925493e0090ef7bb5eb3b998bf73ee20847f9",
+    "tag": "android-10.0.0_r47",
+    "files": [
+      {"name": "liba10vm-source-linker.so", "bytes": 787536, "sha256": "22344bb87ed78b9bef23ca2d16529724e128335a9c0b47463619bf6ade7ae35b"},
+      {"name": "liba10vm-p2-filesystem.so", "bytes": 15512, "sha256": "8f119d80ed753855248873e77c376ea55fa258344fea0a9ddf6be3e2bb2a430d"},
+      {"name": "liba10vm-source-libc.so", "bytes": 1297160, "sha256": "86e0b6732d63e75297463a86e718518e702b977e73c5a5cabc6490350d633b0a"},
+      {"name": "liba10vm-source-libdl.so", "bytes": 11480, "sha256": "e9b5a9b44b634efc60f7fd8f6fa36aa6598bb808e8d3455d108ddf0bd02ab371"}
+    ]
+  },
+  "limitations": [
+    "local ordinary Termux UID evidence; new APK application UID run pending",
+    "only adapted libc calls and ARM64 PIE exec chain are covered",
+    "APEX directory aliases do not prove full APEX activation",
+    "scripts, remaining path syscalls, virtual identity, ART and system services pending",
+    "probe execution times are not Android desktop performance metrics"
+  ]
+}

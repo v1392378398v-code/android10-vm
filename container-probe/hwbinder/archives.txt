@@ -1,0 +1,3 @@
+system/libhwbinder bcd333d90b76d83aadfe480d1ecbe5c5b843ddaa .
+system/libhidl 0a5a8e42404174e8e183957c4a51c4e611ad851d base
+system/libhidl 0a5a8e42404174e8e183957c4a51c4e611ad851d transport

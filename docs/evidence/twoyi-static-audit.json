@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-06",
+  "scope": "static research only",
+  "runtimeExecuted": false,
+  "romDownloaded": false,
+  "hostSettingsChanged": false,
+  "upstreamCommit": "dd052a07a812e742ec7583da393466ccc066a8b1",
+  "sourceDirectory": "https://github.com/twoyi/twoyi/tree/dd052a07a812e742ec7583da393466ccc066a8b1/app/src/main/jniLibs/arm64-v8a",
+  "samples": [
+    {
+      "name": "libloader.so",
+      "bytes": 51040,
+      "sha256": "87bc619bf91d55c55791917c06966f876b76a2850a14889261f4e293cfa53bcd",
+      "gitBlobSha1": "47e0f5bd22b8a379087aab9f752c790b2cd02b82",
+      "architecture": "AArch64",
+      "elfType": "ET_DYN",
+      "entryVa": "0xce0",
+      "mainPointerVa": "0xa548",
+      "interpreter": "/system/bin/linker64",
+      "needed": ["libdl.so", "libc.so"],
+      "loadAlignmentBytes": 4096,
+      "implementationRecovered": false
+    },
+    {
+      "name": "libOpenglRender.so",
+      "bytes": 1059128,
+      "sha256": "53a522a2ac1727d9cb5fb0607a8fc28d71d1954d2f8a6aeef3b5b2aff3cd5d8e",
+      "gitBlobSha1": "39a6d41a3135a0fc5c43707e98c9a83a2662ddb6",
+      "architecture": "AArch64",
+      "elfType": "ET_DYN",
+      "loadAlignmentBytes": 4096,
+      "executableSegmentVaMinusFileOffset": "0x8000",
+      "addressKind": "ELF link-time virtual addresses, not runtime addresses",
+      "exports": {
+        "startOpenGLRenderer": "0x52ff0",
+        "initLibrary": "0x528f8",
+        "RenderServer::create": "0x51e0c",
+        "RenderServer::main": "0x51fe4",
+        "RenderThread::main": "0x52520",
+        "UnixStream::listen": "0x57cd0",
+        "renderControl_decoder_context_t::decode": "0x57f9c",
+        "initRenderControlContext": "0x4e040",
+        "rcGetNumDisplays": "0x4dc0c",
+        "init_egl_dispatch": "0xd638c",
+        "emugl::SharedLibrary::open": "0x6a8f0"
+      }
+    }
+  ],
+  "rendererConnections": {
+    "commandSocket": "/data/data/io.twoyi/rootfs/opengles",
+    "additionalSocket": "/data/data/io.twoyi/rootfs/opengles2",
+    "commandListenCallVa": "0x57e08",
+    "additionalListenCallVa": "0x51f1c",
+    "additionalAcceptCallVa": "0x5209c",
+    "clientFlagsReadCallVa": "0x520b8",
+    "clientFlagsBytes": 4,
+    "renderThreadCreateCallVa": "0x520d4",
+    "additionalProtocolFullyRecovered": false
+  },
+  "protocolMismatch": {
+    "opcode": 10029,
+    "twoyi": {
+      "jumpTableVa": "0xe49a4",
+      "jumpTableFileOffset": "0xdc9a4",
+      "caseVa": "0x58a54",
+      "decoderSlotOffset": "0xf0",
+      "slotAssignmentVa": "0x4e1ac",
+      "gotVa": "0x108648",
+      "relocationType": "R_AARCH64_GLOB_DAT",
+      "relocationSymbol": "_Z16rcGetNumDisplaysv",
+      "operation": "rcGetNumDisplays()",
+      "responseBytesExcludingChecksum": 4
+    },
+    "aospAndroid10": {
+      "repository": "device/generic/goldfish-opengl",
+      "commit": "d291bbd969a8cdb7bf9ac6f7d46af5b3d2b6c309",
+      "tag": "android-10.0.0_r47",
+      "operation": "rcCreateSyncKHR",
+      "opcodeSource": "system/renderControl_enc/renderControl_opcodes.h",
+      "encoderSource": "system/renderControl_enc/renderControl_enc.cpp",
+      "encoderFunctionStartLine": 1098,
+      "responseBytesExcludingChecksum": 16,
+      "requestContainsSyncParameters": true
+    },
+    "conclusion": "These checked implementations are not directly wire-compatible; this is not a runtime test."
+  },
+  "relocationAudit": {
+    "format": "APS2",
+    "sectionLinkIndex": 0,
+    "decodedEntries": 1976,
+    "consumedBytesIncludingMagic": 12878,
+    "sectionBytes": 14656,
+    "trailingBytes": 1778,
+    "trailingByteValues": [0],
+    "methods": [
+      "read-only APS2 SLEB128/group decoding",
+      "dynamic symbol table resolution",
+      "AArch64 jump-table and slot-assignment disassembly",
+      "fixed AOSP encoder/header comparison"
+    ]
+  },
+  "limits": [
+    "No exact Twoyi renderer upstream revision identified.",
+    "No full Binder or loader implementation recovered.",
+    "No Android 10 container desktop, GPU performance or cold-boot benchmark run.",
+    "No 16 KiB page-size runtime test performed."
+  ]
+}

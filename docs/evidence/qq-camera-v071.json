@@ -1,0 +1,87 @@
+{
+  "versionName": "0.2.71-miui12-camera-query",
+  "versionCode": 81,
+  "package": "io.a10vm.miui",
+  "installed": true,
+  "existingDataRetained": true,
+  "rootRequiredByGuest": false,
+  "apk": {
+    "bytes": 3180205716,
+    "sha256": "075ed4ec3571e78f80b421ee1450b849fe4e19ced021854c6500c4c43573ea52",
+    "v2SignatureVerified": true,
+    "nativeFilesVerified": 2631,
+    "runtimeDataFilesVerified": 5149,
+    "systemApksVerified": 319,
+    "lintErrors": 0,
+    "lintFatal": 0,
+    "lintWarnings": 3
+  },
+  "desktop": {
+    "passed": true,
+    "bootSeconds": 22.7,
+    "uid": 10326,
+    "capEff": "0000000000000000",
+    "width": 1080,
+    "height": 2160,
+    "density": 480,
+    "targetHz": 120
+  },
+  "packageQuery": {
+    "client": "android.content.pm.IPackageManager$Stub$Proxy",
+    "standardClientVerified": true,
+    "versionedPathsVerified": true,
+    "directBinderRetained": true,
+    "jniMethodReplacementUsed": false
+  },
+  "applications": {
+    "mt": {"firstFrameDrawn": true, "crashes": [], "observationSeconds": 5},
+    "qq": {
+      "firstFrameDrawn": true,
+      "crashes": [],
+      "observationSeconds": 5,
+      "freshRiskPopupObserved": false,
+      "riskPopupPermanentlyResolved": null
+    }
+  },
+  "camera": {
+    "permissionGrantedViaUi": true,
+    "previewFrameReceived": true,
+    "captureCallbackSucceeded": true,
+    "jpegSaved": true,
+    "jpegParsed": true,
+    "resolution": [4096, 3072],
+    "bytes": 878864,
+    "mediaStoreId": 137,
+    "luminanceRange": [2, 4],
+    "luminanceMean": 2.168,
+    "brightSceneVerified": false,
+    "standaloneCameraCheckPassed": false
+  },
+  "floatingManagement": {
+    "leftAndRightDocking": true,
+    "dragging": true,
+    "clickOpenedManagement": true,
+    "positionRestored": true
+  },
+  "gpuFence": {"gles2Verified": true, "gles3Verified": true},
+  "qqSwipeSample": {
+    "swipes": 4,
+    "presentFps": 73.55,
+    "intervalP95Ms": 24.893,
+    "intervalMaxMs": 306.998,
+    "cpuCores": 3.226,
+    "stable120HzAchieved": false,
+    "controlledBaselineComparison": false
+  },
+  "privateEvidence": [
+    "artifacts/container/camera/apk-verify-v071.log",
+    "artifacts/container/camera/desktop-v071/apk-desktop-report.json",
+    "artifacts/app-compat/apps-v071/report.json",
+    "artifacts/container/camera/package-query-v071.log",
+    "artifacts/container/camera/miui-camera-app-v071.log",
+    "artifacts/container/camera/miui-camera-v071.json",
+    "artifacts/performance/qq-query-v071.json",
+    "artifacts/container/camera/floating-v066.json",
+    "artifacts/container/graphics/desktop/sync-fixed-build.log"
+  ]
+}

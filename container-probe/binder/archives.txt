@@ -1,0 +1,5 @@
+frameworks/native 013eb744f289c70e6d3fe180500d9a414ac55539 libs/binder
+frameworks/native 013eb744f289c70e6d3fe180500d9a414ac55539 libs/binderthreadstate
+system/core 1dea9a052b7f214c10a77d5ed6ffd3602722a817 libcutils
+system/core 1dea9a052b7f214c10a77d5ed6ffd3602722a817 libprocessgroup/include
+system/core 1dea9a052b7f214c10a77d5ed6ffd3602722a817 libbacktrace/include

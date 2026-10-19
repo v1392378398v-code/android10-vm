@@ -1,0 +1,91 @@
+{
+  "versionCode": 44,
+  "versionName": "0.2.34-context-groups",
+  "date": "2026-10-10",
+  "problem": "B 站连续切换视频后，视频区域全黑并出现 EGL_BAD_ALLOC",
+  "rootCause": "所有客体 EGL context 被强制与宿主合成 context 共享，触发本机驱动单共享组 32 context 的上限",
+  "driver": "Qualcomm Adreno (TM) 830",
+  "before": {
+    "guestContextsAtFailure": 30,
+    "hostCompositionAndPresentationContexts": 2,
+    "hostError": "0x3003",
+    "videoSwitchReproductions": [3, 4],
+    "sharedContextsInNativeControl": 32,
+    "independentContextsInNativeControl": 48,
+    "capacityRegressionPassed": false,
+    "guestAndHostVideoRegionBlack": true,
+    "evidence": [
+      "artifacts/app-compat/v43-bili-switch-stress/report.json",
+      "artifacts/app-compat/v43-bili-context-diagnostic2/report.json",
+      "artifacts/app-compat/v43-bili-context-diagnostic2/context-errors.log",
+      "artifacts/app-compat/v43-bili-switch-stress/context-capacity.log",
+      "artifacts/app-compat/v43-bili-switch-stress/context-regression-before.log"
+    ]
+  },
+  "implementation": [
+    "严格按客体显式共享关系建立宿主 EGL 共享组",
+    "FramebufferCopy 统一导入 EGLImage，供 GPU blit 和 GLES2 复制路径使用",
+    "切换或释放当前 context 时清理内部导入纹理及 FBO",
+    "复制中间缓冲区的 EGLImage 在 Surface 调整尺寸、销毁和退出时释放",
+    "context 创建错误写入 Android 日志，包含实际错误码及请求参数",
+    "验收脚本同时检查客体截图和宿主 Surface，支持视频切换及后台停留"
+  ],
+  "validation": {
+    "independentSharedPairs": 24,
+    "guestContextsCreatedAndReleased": 48,
+    "directGpuCopyPixelsPassed": true,
+    "gles2CopyPixelsPassed": true,
+    "concurrentCopiesAndWindowResizePassed": true,
+    "sharedGlyphAtlasAndTransparencyPassed": true,
+    "eglImageMailboxAndNativeVideoPixelsPassed": true,
+    "gpuWorkerAndProcessCleanupPassed": true,
+    "normalUiBootSeconds": 10.892,
+    "guestHostUid": 10698,
+    "guestCapEff": "0000000000000000",
+    "rootRequiredByGuest": false,
+    "deviceRootUsedForAutomation": true,
+    "videoIds": [170001, 455017605],
+    "videoSwitches": 8,
+    "backgroundSeconds": 35,
+    "guestAndHostPixelsChanging": true,
+    "sameSystemServerPid": 20055,
+    "guestContextCreationFailures": 0,
+    "hostContextCreationFailures": 0,
+    "apkVerified": true,
+    "v2SignatureVerified": true,
+    "lintErrors": 0,
+    "lintWarnings": 3,
+    "evidence": [
+      "artifacts/app-compat/v43-bili-switch-stress/context-regression-after.log",
+      "artifacts/app-compat/v43-bili-switch-stress/context-regression-legacy.log",
+      "artifacts/app-compat/v44-bilibili/egl-result.log",
+      "artifacts/app-compat/v44-bilibili/server-check.log",
+      "artifacts/app-compat/v44-bilibili/boot/apk-desktop-report.json",
+      "artifacts/app-compat/v44-bili-switch/report.json",
+      "artifacts/app-compat/v44-bili-background/report.json",
+      "artifacts/app-compat/v44-bilibili/current.png",
+      "artifacts/app-compat/v44-bilibili/bili.log",
+      "artifacts/app-compat/v44-bilibili/gpu-errors.log"
+    ]
+  },
+  "artifact": {
+    "apk": "artifacts/apk/a10vm-0.2.34-context-groups-debug.apk",
+    "delivery": "/storage/emulated/0/Download/A10VM-0.2.34-context-groups.apk",
+    "bytes": 696804712,
+    "sha256": "83fd195f4df67b152e48fb52c4037fe0eac97bac32a00f494b90369f007ea219",
+    "installed": true,
+    "applicationDataPreserved": true
+  },
+  "principles": {
+    "KISS": "按 EGL 语义恢复共享边界，生产代码没有针对机型或 32 上限的特例",
+    "YAGNI": "仅修复共享组及其缓冲区传递、释放和验收",
+    "DRY": "两条复制路径复用同一个 EGLImage 导入缓存",
+    "SOLID": "context 管理由 GpuBackend 负责，导入与复制由 FramebufferCopy 负责，容量回归独立成文件"
+  },
+  "validationScope": "本机 Android 15、两段 B 站视频、8 次切换及 35 秒后台返回",
+  "nextStep": "用 v44 复测用户原来的播放及后台返回操作，并记录更长后台停留和其他设备结果",
+  "tools": {
+    "mcpServicesCalled": 0,
+    "method": "本地 Shell、run-as、系统 UI 自动化与原生 GPU 检查"
+  }
+}

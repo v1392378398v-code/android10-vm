@@ -1,0 +1,137 @@
+{
+  "versionCode": 45,
+  "versionName": "0.2.35-glyph-first-frame",
+  "date": "2026-10-10",
+  "problem": "B 站刚进入视频时弹幕短暂显示为黑色矩形，随后文字恢复",
+  "rootCause": "字形上传线程在客体 API 返回时发布共享纹理，但命令仍留在该线程的缓冲中，或尚未被宿主处理。绘制线程先采样了未完成的纹理存储或参数。旧测试中的 glGetError 往返意外排空命令，掩盖了首次绘制问题",
+  "before": {
+    "command": "python3 guest-runtime/test-desktop-egl.py",
+    "producerExtraQueryRemoved": true,
+    "expectedTransparentPixel": [32, 80, 160, 255],
+    "observedTransparentPixel": [0, 0, 0, 255],
+    "noQueryRegressionPassed": false,
+    "flushOnlyRegressionPassed": false,
+    "rawProtocolAcknowledgementRegressionPassed": true,
+    "evidence": [
+      "artifacts/app-compat/v44-bili-first-frame/no-query-before.json",
+      "artifacts/app-compat/v44-bili-first-frame/no-query-after-flush.json",
+      "artifacts/app-compat/v44-bili-first-frame/no-query-after-ack.json",
+      "artifacts/app-compat/v44-bili-first-frame/bili-entry-8.png"
+    ]
+  },
+  "implementation": [
+    "GuestTextureContexts 按真实 GLSharedGroup 统计存活 context，在 EGL context 构造和析构时注册与注销",
+    "TextureUploadEncoder 包装 glTexImage2D、glTexSubImage2D 和四种 glTexParameter API",
+    "只有存在多个 context 的共享组，在原 API 后执行生成 encoder 的原始 glGetIntegerv(GL_TEXTURE_BINDING_2D)，排空命令并确认宿主已处理",
+    "原始协议查询避开客体状态缓存，保留 GL error 状态；现有 SharedTextureSync fence 负责 GPU 命令排序",
+    "独立 context 保留命令批处理，生产路径没有机型、SDK 或 context 数量上限特例",
+    "构建 codec hash 纳入新 encoder、共享组统计和 EGL 生命周期补丁",
+    "首帧回归先绑定空纹理，worker 上传后立即发布；覆盖保持绑定及重新绑定后的更新",
+    "抓图工具在启动视频前开始采样，报告实际时间戳；视频回归支持精确指定竖屏播放 Activity"
+  ],
+  "packagedInputMismatch": {
+    "error": "Packaged input mismatch: liba10vm-desktop-window.so",
+    "cause": "临时诊断期间直接替换已安装 renderer，导致库与 APK 内的哈希清单不一致",
+    "resolution": "恢复临时替换的库，重新 prepare、stage、生成显示清单及打包，再覆盖安装完整 v45 APK",
+    "buildCommands": [
+      "sh container-probe/graphics/build-desktop.sh",
+      "python3 guest-runtime/test-desktop-egl.py",
+      "python3 guest-runtime/prepare-desktop.py",
+      "python3 guest-runtime/stage.py",
+      "sh tools/stage-native-display.sh",
+      "sh tools/build-termux.sh :app:assembleDebug :app:lintDebug",
+      "python3 tools/verify-native-display-apk.py"
+    ],
+    "installedVersionCodeVerified": 45,
+    "expectedRendererSha256": "281059a49dee9e5a2ca7fb4ec9918279b3a11820f70afc38c33566a8ef83d4d4",
+    "installedRendererSha256": "281059a49dee9e5a2ca7fb4ec9918279b3a11820f70afc38c33566a8ef83d4d4",
+    "installedRendererMatchesManifest": true,
+    "installedApkMatchesDelivery": true,
+    "applicationDataPreserved": true
+  },
+  "validation": {
+    "sharedGlyphFirstFramePassed": true,
+    "sharedGlyphWithoutQueryPassed": true,
+    "sharedGlyphAtlasPassed": true,
+    "sharedGlyphUpdateWithoutRebindingPassed": true,
+    "transparentPixel": [32, 80, 160, 255],
+    "opaquePixel": [255, 255, 255, 255],
+    "antialiasPixel": [144, 168, 208, 255],
+    "updatedOpaquePixel": [255, 255, 0, 255],
+    "eglImageMailboxAndNativeVideoPixelsPassed": true,
+    "directGpuCopyAndGles2CopyPassed": true,
+    "concurrentCopyAndWindowResizePassed": true,
+    "contextGroupsCapacityPassed": 48,
+    "processCleanupPassed": true,
+    "bootSeconds": 11.058,
+    "guestHostUid": 10698,
+    "guestCapEff": "0000000000000000",
+    "rootRequiredByGuest": false,
+    "deviceRootUsedForAutomation": true,
+    "videoIds": [170001, 455017605],
+    "videoSwitchesPassed": 2,
+    "guestAndHostVideoPixelsChanging": true,
+    "sameSystemServerPid": 31368,
+    "coldEntry": {
+      "videoId": 455017605,
+      "frames": 40,
+      "durationSeconds": 38.197,
+      "meanSampleIntervalSeconds": 0.979,
+      "minSampleIntervalSeconds": 0.751,
+      "maxSampleIntervalSeconds": 1.443,
+      "firstPlayerFrame": 13,
+      "firstDanmakuFrame": 17,
+      "visualReview": "第 17 至 39 帧弹幕文字正常，采样画面未观察到先前的黑色矩形",
+      "perRefreshFrameVerification": false
+    },
+    "backgroundReturn": {
+      "completed": false,
+      "reason": "首次检查处于首页，重新进入后为竖屏 StoryTransparentActivity；指定该播放页后，基础视频采样通过，但后台返回采样期间宿主前台切到了其他应用，检查中断",
+      "storyPlaybackBeforeBackgroundPassed": true,
+      "evidence": [
+        "artifacts/app-compat/v45-bili-background/report.json",
+        "artifacts/app-compat/v45-bili-background-video/report.json",
+        "artifacts/app-compat/v45-bili-background-story/report.json"
+      ]
+    },
+    "apkVerified": true,
+    "v2SignatureVerified": true,
+    "nativeFilesVerified": 1060,
+    "runtimeDataFilesVerified": 2209,
+    "systemApksVerified": 114,
+    "lintErrors": 0,
+    "lintWarnings": 3,
+    "evidence": [
+      "artifacts/app-compat/v44-bili-first-frame/regression-final.json",
+      "artifacts/app-compat/v44-bili-first-frame/presentation-final.log",
+      "artifacts/app-compat/v44-bili-first-frame/apk-verification.json",
+      "artifacts/app-compat/v45-bilibili/boot/apk-desktop-report.json",
+      "artifacts/app-compat/v45-bili-entry-cold/report.json",
+      "artifacts/app-compat/v45-bili-entry-cold/entry-grid.jpg",
+      "artifacts/app-compat/v45-bili-switch/report.json",
+      "artifacts/app-compat/v45-bilibili/current-after-switch.png"
+    ]
+  },
+  "artifact": {
+    "apk": "artifacts/apk/a10vm-0.2.35-glyph-first-frame-debug.apk",
+    "delivery": "/storage/emulated/0/Download/A10VM-0.2.35-glyph-first-frame.apk",
+    "bytes": 696807220,
+    "sha256": "2d42335bc153ca743227d86592502656a53aa08dc1e0c1e9f19908f62eb39123",
+    "installed": true,
+    "qemuPackaged": false,
+    "tcgPackaged": false,
+    "rfbPackaged": false
+  },
+  "principles": {
+    "KISS": "复用原有查询协议确认宿主执行，避免新传输命令或 GPU 全局等待",
+    "YAGNI": "同步限定在多 context 共享纹理的上传及参数修改",
+    "DRY": "六种 API 使用同一个 publish 包装逻辑",
+    "SOLID": "共享组生命周期统计、上传发布和回归验收分别位于独立模块"
+  },
+  "validationScope": "本机 Android 15；真实客体 EGL 首次绘制及更新的像素断言；B 站冷进入约一秒采样和两次视频切换。后台返回验收受宿主前台切换打断",
+  "nextStep": "使用 v45 检查原视频首次弹幕及后台返回，在其他 Android 版本保留具体设备和触发记录",
+  "tools": {
+    "mcpServicesCalled": 0,
+    "method": "本地 Shell、run-as、系统 UI 自动化及原生 GPU 检查"
+  }
+}

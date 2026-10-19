@@ -1,0 +1,86 @@
+{
+  "stage": "rootless native graphics and independent multitouch application",
+  "date": "2026-10-08",
+  "backend": "native-arm64-gles-surface",
+  "rootRequired": false,
+  "apkRunVerified": false,
+  "surfaceVerified": false,
+  "desktopImplemented": false,
+  "desktopVerified": false,
+  "performanceVerified": false,
+  "apk": {
+    "path": "artifacts/apk/a10vm-0.2.0-native-display-debug.apk",
+    "downloadCopy": "/storage/emulated/0/Download/A10VM-0.2.0-native-display.apk",
+    "package": "io.a10vm",
+    "versionCode": 10,
+    "versionName": "0.2.0-native-display",
+    "bytes": 4234769,
+    "sha256": "5112267ce63deced7778385c37a69d0a581ceffa55c773fe5959d3df574b8ba6",
+    "v2SignatureVerified": true,
+    "nativeFilesVerified": 6,
+    "jniExportsVerified": 12,
+    "qemuPackaged": false,
+    "rfbPackaged": false,
+    "guestImagePackaged": false,
+    "report": "artifacts/container/graphics/native-display-apk-report.json",
+    "reportSha256": "1381b144231c580f0d1c8d464ad8b0882a69922f70b691446a12a64243d3733a"
+  },
+  "validation": {
+    "assembleDebug": true,
+    "lintErrors": 0,
+    "lintWarnings": 3,
+    "probeAssembleAndLint": true,
+    "probeInputFilesVerified": 8,
+    "inputProtocol": "touch-v2",
+    "packetBytes": 192,
+    "maximumPointers": 10,
+    "targetHz": 60,
+    "measuredSurfaceHz": null,
+    "buildLog": "artifacts/container/graphics/final-apk-build.log"
+  },
+  "nativeIntegration": {
+    "executionContext": "ordinary Termux UID with production renderer/client and pbuffer; not the new APK",
+    "uid": 10373,
+    "effectiveCapabilities": "0000000000000000",
+    "hostGpu": "EGL 1.5 / Qualcomm / Adreno (TM) 830",
+    "guestExecutableMappings": 5,
+    "startAndExitIdentityVerified": true,
+    "normal": {
+      "passed": true,
+      "frames": 50,
+      "inputEvents": 205,
+      "echoSequence": 205,
+      "report": "artifacts/container/graphics/native-window-report.json",
+      "reportSha256": "eab32e45b7eccd32663acafd7b55eb0ed3694db257fe20c6d243da01fe0782ba"
+    },
+    "stallInput": {
+      "passed": true,
+      "inputDeliveredDuringGlPause": true,
+      "inputEvents": 205,
+      "framesAfterRelease": 50,
+      "report": "artifacts/container/graphics/native-window-stall-input-report.json",
+      "reportSha256": "065b468f4f0d1885448a8bce8487aed6c7478e1f9cd14235c47867977886bcd5"
+    },
+    "stopPending": {
+      "passed": true,
+      "inputEvents": 205,
+      "appliedBeforeFix": 2,
+      "appliedAfterFix": 205,
+      "fix": "enqueue STOP after all accepted input; guest checks applied sequence before exiting",
+      "report": "artifacts/container/graphics/native-window-stop-pending-report.json",
+      "reportSha256": "aa2fa02a00080ddf86c9d863e1d9cde4403a9461bb6ec3fd3ed65ad3bc50a9ef",
+      "beforeLog": "artifacts/container/graphics/stop-pending-before.log",
+      "beforeLogSha256": "acdf867321d40840b50cbd0399f7b8ef8bfb1a5c4d62e7bec389404a6a1be8d8",
+      "afterLog": "artifacts/container/graphics/stop-pending-after.log",
+      "afterLogSha256": "3c37e9d985d3169569e198eeecbc73cdaa3727d9218f0a4b04d4df8d48d3c959"
+    }
+  },
+  "pending": [
+    "new APK installation, Surface frame rate, multitouch latency and Activity recreation",
+    "integration of source-built Bionic, private properties, filesystem and Binder/HwBinder",
+    "complete guest EGL/renderControl/gralloc/HWC/SurfaceFlinger",
+    "ART, Android 10 system services and full desktop boot/application behavior"
+  ],
+  "historicalSurfaceEvidence": "docs/evidence/container-graphics-p1b.json",
+  "historicalSurfaceBoundary": "30 Hz and old input protocol; not reused as results for this APK"
+}

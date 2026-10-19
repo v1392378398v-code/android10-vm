@@ -1,0 +1,156 @@
+{
+  "date": "2026-10-11",
+  "result": "miui-desktop-settings-and-home-touch-passed-1080x2160",
+  "desktopVerified": true,
+  "backup": {
+    "directory": "/data/data/com.termux/files/home/android10-vm-backups/20261011-114928",
+    "archive": "android10-vm-full.tar",
+    "bytes": 27410503680,
+    "sha256": "f544a41e4aa2971e106569a323553be2a5f84ac4870caf47522a26dec29de558",
+    "records": 92529,
+    "compareExitCode": 0,
+    "compareLogBytes": 0,
+    "skippedUnixSockets": 9
+  },
+  "rom": {
+    "source": "/storage/emulated/0/Download/1DMP/Compressed/miui_RAPHAEL_20.12.9_8a0621754f_10.0.zip",
+    "sourceBytes": 2822425488,
+    "sourceSha256": "4107c1aad79be2bec98cd0646b1bc6682baba7f75660c721f818a263bacae633",
+    "sourceUnchangedDuringImport": true,
+    "device": "raphael",
+    "build": "20.12.9",
+    "android": "10",
+    "sdk": 29,
+    "abi": "arm64-v8a",
+    "systemSha256": "9875c88b66743014b4963a26cd7f63816f877f5f7d6b10e3ace83b10980a3c56",
+    "vendorSha256": "a10516c398c3c78d914551c4d8ff37160722045af7fb0692fdd45a3a0fa22596",
+    "bootSha256": "ab45e98c66c11b67cc253903f52709b7f6af1e135604b997579845c29bc7bf6d",
+    "bootImageExecuted": false,
+    "runtimeModel": "native-arm64-userspace-with-host-kernel"
+  },
+  "runtime": {
+    "hostAndroid": "16",
+    "hostModel": "PJZ110",
+    "rootRequired": false,
+    "physicalUid": 10373,
+    "capEff": "0000000000000000",
+    "identitySamples": 29,
+    "allIdentitySamplesMatch": true,
+    "guestUidMapping": true,
+    "prepared": "artifacts/experiments/miui12-20.12.9/prepared-v2",
+    "retainedRuntime": "artifacts/rom-gdquroh8",
+    "romServicesStarted": ["shelld"],
+    "shelldAliveBeforeCleanup": true,
+    "trialProcessesStoppedAfterCapture": true
+  },
+  "checks": {
+    "otaTestsPassed": 4,
+    "profileTestsPassed": 5,
+    "propertyBundleTestsPassed": 2,
+    "romServiceIdentityCheckPassed": true,
+    "artReady": true,
+    "javaBinderRoundTrips": 64,
+    "hardwareServiceManagerReady": true,
+    "systemApkPaths": 318,
+    "packagesDataReconciled": 245,
+    "systemServerBootPhase": 1000,
+    "bootCompleted": true,
+    "userUnlocked": true,
+    "homePackage": "com.miui.home",
+    "homeActivity": ".launcher.Launcher",
+    "homeWindowDrawn": true,
+    "frameWritten": true,
+    "desktopVerified": true,
+    "error": null
+  },
+  "frame": {
+    "path": "docs/evidence/miui12-boot-screen.png",
+    "width": 1080,
+    "height": 2160,
+    "totalPixels": 2332800,
+    "nonblackPixels": 1533484,
+    "nonblackRatio": 0.6573576817558299,
+    "minimumNonblackRatio": 0.05,
+    "systemBarsVisible": true,
+    "homeContentBlack": false,
+    "pixelSha256": "b39c5340f66c11235ea34c2fafff0f9c58d0cec0a484fa10648810e4eddedb8a",
+    "pngSha256": "8371a4813d6c34699347db95f271a9900c41f5d8bac0351ca945c55e26229af8"
+  },
+  "touch": {
+    "passed": true,
+    "acceptedEvents": 4,
+    "maxAcknowledgementMs": 16.17,
+    "settings": {
+      "coordinates": [159, 1620],
+      "topActivity": "com.android.settings/.MiuiSettings",
+      "windowDrawn": true,
+      "frame": "docs/evidence/miui12-settings-screen.png",
+      "nonblackPixels": 2304965,
+      "pixelSha256": "13ede7a90f0d98953ec88f0d0acf7a15bf4e89e11b0e4d225bba90f6da6f179b",
+      "pngSha256": "4227372857ef85c4e90a4fe41e5cccd72f7475fe72dde5eb60cfaa8c9e310a2f"
+    },
+    "homeReturn": {
+      "coordinates": [540, 2095],
+      "topActivity": "com.miui.home/.launcher.Launcher",
+      "windowDrawn": true,
+      "frame": "artifacts/experiments/miui12-20.12.9/desktop-1080x2160/home-return.png",
+      "nonblackPixels": 1516037,
+      "pixelSha256": "fa048feba2afd5166c9fcd8ea2c790b2e3b2767b87d1fd6cfa130d92a267f0e9"
+    }
+  },
+  "displayConfiguration": {
+    "width": 1080,
+    "height": 2160,
+    "aspectRatio": "18:9",
+    "previousHeight": 1920,
+    "heightIncreasePercent": 12.5,
+    "targetRefreshHz": 120,
+    "sustainedActualRefreshMeasured": false,
+    "source": "container-probe/graphics/desktop/DesktopDisplay.h"
+  },
+  "productProperties": {
+    "device": "raphael",
+    "model": "Redmi K20 Pro",
+    "brand": "Xiaomi",
+    "name": "raphael",
+    "seedSha256": "c8a2f1bb2cf2674d964ef24c70fd3828a006e1426e0fe075cee07ff12730e395"
+  },
+  "previousBlackFrame": {
+    "path": "docs/evidence/miui12-boot-screen-before.png",
+    "width": 1080,
+    "height": 1920,
+    "nonblackPixels": 4017,
+    "pngSha256": "8e5936ef59e470e290de714e3532bc7d21e5c3511fc1238ce9bef306b1e09b76"
+  },
+  "fixes": [
+    "Wait for user unlock and follow default HOME changes after Provision",
+    "Start the ROM shelld and map its startup credentials in guest userspace",
+    "Merge partition product identity and resolve property symlinks under the ROM root",
+    "Share 1080x2160 geometry between compositor, Surface and touch mapping"
+  ],
+  "cleanup": {
+    "manifest": "artifacts/experiments/miui12-20.12.9/cleanup.json",
+    "obsoleteRuntimeCopiesRemoved": 26,
+    "obsoletePreparedCopiesRemoved": 1,
+    "allocatedBytesRemoved": 137707810304,
+    "observedFreeBytesDelta": 139120840704,
+    "preservedDiagnosticCopies": 3341,
+    "keptRuntimes": [
+      "artifacts/rom-2rnw49uz",
+      "artifacts/rom-rgeo1677"
+    ]
+  },
+  "desktopCleanup": {
+    "manifest": "artifacts/experiments/miui12-20.12.9/cleanup-desktop.json",
+    "obsoleteRuntimeCopiesRemoved": 2,
+    "allocatedBytesRemoved": 10958415360,
+    "preservedDiagnosticCopies": 236
+  },
+  "evidenceDirectory": "artifacts/experiments/miui12-20.12.9/desktop-1080x2160",
+  "previousInteractiveEvidenceDirectory": "artifacts/experiments/miui12-20.12.9/desktop-touch-identity",
+  "remaining": [
+    "MIUI APK integration",
+    "audio, networking, camera and third-party app verification",
+    "other host Android versions and long-running stability"
+  ]
+}

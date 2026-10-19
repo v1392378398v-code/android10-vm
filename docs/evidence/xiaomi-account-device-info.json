@@ -1,0 +1,91 @@
+{
+  "version": "0.2.60-miui12-account-capabilities",
+  "package": "com.xiaomi.account",
+  "symptom": "Login remains at device security information collection",
+  "observedErrors": [
+    "SecurityDeviceCredentialManager: getService: NULL binder, retry...",
+    "FidSignerImpl: java.util.concurrent.TimeoutException at FutureTask.get",
+    "SecurityDeviceOnlineRequest: server code: 2; desc: null fid nonce"
+  ],
+  "callPath": [
+    "ISecurityDeviceSignService.Stub.onTransact",
+    "SecurityDeviceSignService",
+    "SecurityDeviceSignUtils",
+    "SecurityDeviceFidNonce",
+    "FidSignerImpl"
+  ],
+  "romSdk": "/system/framework/security-device-credential-sdk.jar",
+  "status": "Installed; password login form opens and the guest account database contains a Xiaomi account",
+  "resolvedBlockers": {
+    "missingStorageHal": "vendor.xiaomi.hardware.mtdservice@1.1::IMTService/default",
+    "storageDirectory": "/data/system/a10vm-mtd",
+    "findDeviceReplacedCredentialEndpoint": true,
+    "romAndroid10ClaimedTrustZoneWithoutBackend": true,
+    "serverErrorCode": 10016,
+    "serverErrorReason": "Missing cloudsp_fid",
+    "fix": "Preserve a live credential Binder and check the SDK capability before entering FindDevice login"
+  },
+  "release": {
+    "versionCode": 70,
+    "apk": "/storage/emulated/0/Download/A10VM-MIUI12-1080x2160-v0.2.60.apk",
+    "bytes": 3181521307,
+    "sha256": "930abb9232861b4eb078ca5a87b0494d6fce453ca3caaf42ee605a307cf003f1",
+    "v2SignatureVerified": true,
+    "stageTestsPassed": 15,
+    "nativeFilesVerified": 2628,
+    "runtimeDataFilesVerified": 5148,
+    "systemApksVerified": 319
+  },
+  "rawLogsRemovedDuringRequestedStorageCleanup": true,
+  "credentialFixture": {
+    "ordinaryUid": 10373,
+    "missingServiceReproduced": true,
+    "unsupportedCredentialCallbacksCompleted": true,
+    "existingServicePreserved": true,
+    "callbackElapsedMs": 14,
+    "fdppRegistered": true,
+    "fdppClientStatus": "passed with the actual IPermissionController parcel contract in the independent fixture",
+    "fdppKernelUid": 10373,
+    "fdppCapEff": "0000000000000000",
+    "installationStatus": "v0.2.56 installed; callback completion and fdpp registration verified in the full guest",
+    "installedCallbackElapsedMs": 20
+  },
+  "installedLogin": {
+    "passwordLoginPageOpened": true,
+    "passwordPageTransitionMs": 861,
+    "touchCoordinatesFromGuestView": true,
+    "credentialsSubmittedByTest": false,
+    "localXiaomiAccountPresent": true,
+    "accountManagementPageObserved": true,
+    "serverTokenValidityChecked": false,
+    "findDeviceProviderQueriesPassed": 5,
+    "findDeviceProviderElapsedMs": 28,
+    "credentialSdkSupported": false,
+    "findDeviceLoginCapability": false,
+    "credentialCallbacksCompleted": true,
+    "credentialCallbackElapsedMs": 7,
+    "existingCredentialEndpointPreserved": true,
+    "storageRestartPersisted": true,
+    "storageRemoveIdempotent": true,
+    "kernelUid": 10326,
+    "kernelCapEff": "0000000000000000",
+    "display": {"width": 1080, "height": 2160, "density": 480, "targetHz": 120},
+    "guestScreenshotContainsPrivateAccountProfile": true,
+    "genericDesktopSurfaceCheckInterruptedByHostBackground": true
+  },
+  "bilibiliStartup": {
+    "status": "Installed comparison captured in docs/evidence/app-performance-miui-v056.json; cold launch improvement was not observed",
+    "component": "tv.danmaku.bili/.MainActivityV2",
+    "totalTimeMs": 4636,
+    "waitTimeMs": 4645,
+    "hostBackgroundFreezeObserved": true,
+    "playbackProfile": {
+      "durationSeconds": 6,
+      "samples": 3387,
+      "brokerKernelSpinUnlockPercent": 10.10,
+      "gpuWorkerKernelSpinUnlockPercent": 4.07,
+      "brokerDispatchPercent": 2.51,
+      "isStartupProfile": false
+    }
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "versionCode": 40,
+  "versionName": "0.2.30-douyin-jit",
+  "issue": "Unexpected guest executable mapping: [/memfd:/ jit-cache] during Android startup",
+  "cause": "Anonymous ART JIT cache mappings were canonicalized and checked as packaged ELF paths",
+  "fix": {
+    "source": "guest-runtime/src/main/java/io/a10vm/guestruntime/RuntimeIdentity.java",
+    "exactJitMappingNames": [
+      "/memfd:jit-cache",
+      "/memfd:/jit-cache",
+      "/memfd:/ jit-cache",
+      "/memfd:jit-code-cache",
+      "/memfd:/jit-code-cache",
+      "/memfd:/ jit-code-cache",
+      "[anon:dalvik-jit-code-cache]",
+      "/dev/ashmem/dalvik-jit-code-cache"
+    ],
+    "deletedSuffixHandled": true,
+    "jitDisabled": false,
+    "packagedElfValidationRetained": true,
+    "requiredElfValidationRetained": true,
+    "identityValidationRetained": true
+  },
+  "regression": {
+    "command": "sh guest-runtime/test-runtime-identity.sh",
+    "before": "Unexpected guest executable mapping: [/memfd:jit-cache]",
+    "after": [
+      "runtime_identity_jit_mappings_complete=1",
+      "runtime_identity_external_mappings_rejected=1",
+      "runtime_identity_required_mappings_checked=1"
+    ],
+    "hostLibrariesRejected": true,
+    "unknownAnonymousNamesRejected": true,
+    "cacheNameSuffixesRejected": true,
+    "missingLibcRejected": true,
+    "missingLinkerRejected": true,
+    "jitOnlyMappingsRejected": true,
+    "passed": true
+  },
+  "build": {
+    "command": "sh tools/build-termux.sh :app:assembleDebug :app:lintDebug",
+    "passed": true,
+    "lintErrors": 0,
+    "lintFatal": 0,
+    "lintWarnings": 3
+  },
+  "apk": {
+    "path": "artifacts/apk/a10vm-0.2.30-douyin-jit-debug.apk",
+    "downloadPath": "/storage/emulated/0/Download/A10VM-0.2.30-douyin-jit.apk",
+    "bytes": 696767220,
+    "sha256": "0f8af889399b37242c14307acec6571229cdf378716bad6876b6dfb65f66728b",
+    "versionCodeInstalled": 40,
+    "v2SignatureVerified": true,
+    "nativeFilesVerified": 1060,
+    "runtimeDataFilesVerified": 2209,
+    "rootRequiredByGuest": false,
+    "tcgPackaged": false,
+    "userDataCleared": false
+  },
+  "deviceBoot": {
+    "command": "python3 tools/test-apk-desktop.py --direct-start --stability-seconds 5",
+    "passed": true,
+    "startMethod": "app-service",
+    "bootSeconds": 9.703,
+    "stabilitySeconds": 5.0,
+    "systemServerPid": 4602,
+    "systemServerAlive": true,
+    "launcherDrawn": true,
+    "surfaceOpened": true,
+    "uid": 10698,
+    "euid": 10698,
+    "capEff": "0000000000000000",
+    "selinux": "u:r:untrusted_app:s0:c186,c258,c512,c768",
+    "deviceRootUsedForAutomation": true,
+    "otherAffectedDevicesTested": false
+  },
+  "pendingIssues": [
+    "Bilibili app danmaku rendered as black blocks",
+    "Bilibili app video black after returning from host background"
+  ]
+}

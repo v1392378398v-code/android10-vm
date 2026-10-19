@@ -1,0 +1,7 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="io.a10vm.fixture.installtarget" android:versionCode="1" android:versionName="1">
+    <uses-sdk android:minSdkVersion="29" android:targetSdkVersion="29" />
+    <application android:label="Installer target fixture" android:allowBackup="false">
+        <activity android:name="io.a10vm.fixture.installer.InstallActivity" android:exported="true" />
+    </application>
+</manifest>

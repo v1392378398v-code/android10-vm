@@ -1,0 +1,77 @@
+{
+  "stage": "P2 Android 10 private HwBinder API",
+  "date": "2026-10-07",
+  "report": "artifacts/container/runtime/binder/device/report.json",
+  "reportSha256": "b771c8c729e4f255460906625571257559253d67fc422029226a3a8a3bf22e45",
+  "nativeReport": "artifacts/container/runtime/hwbinder/local-report.json",
+  "nativeReportSha256": "65f2ea882504dca3e502b1c858a88f5e93dcb5e728896330fb23c6bbc91d924f",
+  "inputManifest": "container-probe/build/prepared/assets/hwbinder-inputs.json",
+  "inputManifestSha256": "6c9b115c8470bfd60497190162da0f0d50cf11e3b5a690bce0c6a214fc9a97fb",
+  "passed": true,
+  "completeG2": false,
+  "sourceBuilt": true,
+  "sources": {
+    "tag": "android-10.0.0_r47",
+    "frameworksNative": "013eb744f289c70e6d3fe180500d9a414ac55539",
+    "systemCore": "1dea9a052b7f214c10a77d5ed6ffd3602722a817",
+    "component": "53cd0c620de07a125c8d289d9428eedb5526c9804dacc80801b4b4d8bd6c946d",
+    "verifiedInputFiles": 4,
+    "requiredClientChecks": 16
+  },
+  "apk": {
+    "path": "artifacts/container/runtime/hwbinder/probe.apk",
+    "bytes": 3751216,
+    "sha256": "664f5e511bc6533b8c9986528ff9f83424045fb0abc5ce590baf34c9d2a3725a",
+    "versionCode": 10,
+    "versionName": "p2-hidl-values",
+    "minSdk": 30,
+    "targetSdk": 35,
+    "nativeAbi": "arm64-v8a",
+    "v2SignatureVerified": true,
+    "signers": 1,
+    "zipalign4Verified": true,
+    "zipalign16kVerified": false
+  },
+  "device": {
+    "hostSdk": 36,
+    "pageSize": 4096,
+    "appUid": 10764,
+    "ordinaryAppUid": true,
+    "localRootTransport": true,
+    "uninstalledAfterTest": true
+  },
+  "hwbinder": {
+    "passed": true,
+    "clientChecksPassed": 16,
+    "lifecycleChecks": {
+      "registryContext": true,
+      "serviceRegistered": true
+    },
+    "resourcesReclaimed": true,
+    "finalStats": [0, 0, 0, 0, 0, 0, 0, 0, 29, 29, 0, 58, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    "workDirectoryRemoved": true,
+    "brokerDisconnectNormalExit": true,
+    "processUidMatchesApp": true,
+    "serviceExitCodeAfterIntentionalTermination": 143,
+    "registryExitCodeAfterIntentionalTermination": 143
+  },
+  "validation": {
+    "nativeChecks": 16,
+    "deviceChecks": 16,
+    "cleanupRegressionTests": 9,
+    "assembleDebug": true,
+    "lintErrors": 0,
+    "lintWarnings": 8,
+    "apkV2Signature": true,
+    "zipalign4": true,
+    "zipalign16k": false,
+    "nativeDiagnosticsRemoved": true
+  },
+  "limitations": [
+    "completeG2 remains false",
+    "HwBinder transport is an application Unix socket and does not exercise the host kernel driver",
+    "BINDER_BUFFER_FLAG_REF is not supported by the shared transport",
+    "cross-UID policy, ART, system composition, and the full Android 10 desktop remain pending"
+  ],
+  "next": "ART, system composition, and full Android 10 desktop"
+}

@@ -1,0 +1,90 @@
+{
+  "date": "2026-10-10",
+  "versionName": "0.2.22-clear-data",
+  "versionCode": 32,
+  "rootRequired": false,
+  "display": {"width": 1080, "height": 1920, "density": 480, "targetHz": 120},
+  "apk": {
+    "path": "artifacts/apk/a10vm-0.2.22-clear-data-debug.apk",
+    "downloadPath": "/storage/emulated/0/Download/A10VM-0.2.22-clear-data.apk",
+    "bytes": 697244288,
+    "sha256": "9ba955397514953c615dc8fe615a7e9ef0268423e96659114899ed6e77387ce4",
+    "v2SignatureVerified": true,
+    "nativeFilesVerified": 1060,
+    "runtimeDataFilesVerified": 2209,
+    "systemAndOverlayApksVerified": 114,
+    "lint": {"Error": 0, "Fatal": 0, "Warning": 3},
+    "qemuPackaged": false,
+    "tcgPackaged": false,
+    "rfbPackaged": false
+  },
+  "reproduction": {
+    "versionCode": 31,
+    "command": "env -u LD_LIBRARY_PATH -u LD_PRELOAD python3 tools/test-apk-clear-data.py --label v31-foreground",
+    "package": "io.a10vm.fixture.cleardata",
+    "clearResult": "DeadObjectException",
+    "systemServerExited": true,
+    "fatalThread": "PackageManager",
+    "exception": "java.lang.UnsupportedOperationException: Uninitialized guest key store: clear_uid",
+    "callChain": [
+      "PackageManagerService.clearApplicationUserDataLIF",
+      "PackageManagerService.removeKeystoreDataIfNeeded",
+      "android.security.KeyStore.clearUid",
+      "PrivateKeyStore.invoke"
+    ]
+  },
+  "fix": {
+    "file": "guest-runtime/check/PrivateKeyStore.java",
+    "behavior": "Return Android 10 NO_ERROR (1) for clear_uid on the empty private keystore",
+    "scope": "Application key cleanup; no aliases or cryptographic keys are currently retained",
+    "principles": {
+      "KISS_YAGNI": "Implement the missing cleanup operation without adding an unrelated key backend",
+      "SRP": "Keep key lifecycle behavior inside PrivateKeyStore",
+      "DRY": "Reuse the installed guest command driver and desktop drawing assertion"
+    }
+  },
+  "device": {
+    "retainedDataInstallPassed": true,
+    "bootMethod": "App foreground service",
+    "bootSeconds": 8.208,
+    "hostUid": 10698,
+    "guestCapEff": "0000000000000000",
+    "selinuxDomain": "untrusted_app",
+    "launcherDrawn": true,
+    "surfaceOpened": true,
+    "systemServerPid": 23923,
+    "sameSystemServerAliveAfterClearAndUninstall": true,
+    "deviceRootUsedForAutomation": true
+  },
+  "regression": {
+    "command": "env -u LD_LIBRARY_PATH -u LD_PRELOAD python3 tools/test-apk-clear-data.py --label v32-fixed",
+    "passed": true,
+    "package": "io.a10vm.fixture.cleardata",
+    "cycles": [
+      {"clearSeconds": 0.483, "markersBefore": 5, "markersAfter": 0, "desktopResponsive": true},
+      {"clearSeconds": 0.454, "markersBefore": 5, "markersAfter": 0, "desktopResponsive": true}
+    ],
+    "dataCovered": ["CE files", "CE cache", "CE code cache", "DE files", "DE cache", "shared preferences"],
+    "preferencesResetAfterRelaunch": true,
+    "relaunchDrawn": true,
+    "fixtureRemoved": true,
+    "automationClearsOnlyFixtureData": true
+  },
+  "evidence": [
+    "artifacts/clear-data/v31-foreground/report.json",
+    "artifacts/clear-data/v31-foreground/0-clear.log",
+    "artifacts/clear-data/v31-foreground/framework-server.log",
+    "artifacts/clear-data/v32-fixed/report.json",
+    "artifacts/clear-data/v32-fixed/0-clear.log",
+    "artifacts/clear-data/v32-fixed/1-clear.log",
+    "artifacts/clear-data/v32-fixed/relaunch-drawn.log",
+    "artifacts/clear-data/v32-fixed/finish-home-drawn.log",
+    "artifacts/clear-data/v32-fixed/framework-server.log",
+    "artifacts/clear-data/build-v32.log",
+    "artifacts/clear-data/verify-v32.log"
+  ],
+  "remaining": [
+    "Continue Douyin native plugin and third-party startup compatibility work",
+    "Implement and validate full private keystore separately"
+  ]
+}

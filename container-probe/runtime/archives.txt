@@ -1,0 +1,8 @@
+bionic 290c0cb5044b643e5d6cbcb1a5b275541ca3a89e libc
+bionic 290c0cb5044b643e5d6cbcb1a5b275541ca3a89e linker
+bionic 290c0cb5044b643e5d6cbcb1a5b275541ca3a89e libstdc++
+system/core 1dea9a052b7f214c10a77d5ed6ffd3602722a817 liblog
+system/core 1dea9a052b7f214c10a77d5ed6ffd3602722a817 libcutils/include
+external/libcxx d356ee1683aa5681564c81ad69fe19bc6abd5da5 include
+external/libcxxabi b599c4d59ebf8d589c82a1d5fd98a6c0a955fe7b include
+external/libcxxabi b599c4d59ebf8d589c82a1d5fd98a6c0a955fe7b src

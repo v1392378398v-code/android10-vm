@@ -1,0 +1,64 @@
+{
+  "date": "2026-10-11",
+  "package": "io.a10vm.miui",
+  "versionName": "0.2.51-miui12-app-cache",
+  "versionCode": 61,
+  "installed": true,
+  "applicationDataPreserved": true,
+  "rootRequiredByGuest": false,
+  "deviceRootUsedForAutomation": true,
+  "runtimeIdentity": {"uid": 10326, "euid": 10326, "capEff": "0000000000000000"},
+  "display": {"width": 1080, "height": 2160, "densityDpi": 480, "configuredRefreshHz": 120},
+  "implementation": [
+    "Binder and HwBinder use persistent level-triggered epoll instead of rebuilding all poll descriptors",
+    "Writable notifications follow backpressure and stop when the output queue drains",
+    "Application DEX cache directory comes from actual package UID and ApplicationInfo dataDir",
+    "MIUI package refreshes the existing verified DEX archive cache library"
+  ],
+  "binderBenchmark": {
+    "idleConnections": 768,
+    "rounds": 3000,
+    "before": {"elapsedSeconds": 0.429037, "brokerCpuSeconds": 0.41, "roundTripsPerSecond": 6992},
+    "after": {"elapsedSeconds": 0.163647, "brokerCpuSeconds": 0.13, "roundTripsPerSecond": 18332},
+    "activePeerSurvivedClose": true,
+    "backpressureDrained": true,
+    "idleCpuTicks": 0,
+    "beforeEvidence": "artifacts/performance/broker-idle-before.json",
+    "afterEvidence": "artifacts/performance/broker-idle-after.json",
+    "limitation": "Real broker request round trips with idle sockets; not full app throughput"
+  },
+  "checks": {
+    "binderSeparateProcesses": {"passed": true, "checks": 25, "evidence": "artifacts/performance/broker-epoll-native.log"},
+    "binderCleanupAndNestedDispatch": {"passed": true, "evidence": "artifacts/performance/broker-epoll-cleanup.log"},
+    "dexCacheValidation": {"passed": true, "cases": 14, "evidence": "artifacts/performance/dex-cache-validation.log"},
+    "actualPackageDirectories": {"passed": true, "packages": ["com.ss.android.ugc.aweme", "com.tencent.mobileqq"], "evidence": "artifacts/performance/app-dex-directory-v051.log"},
+    "installedApk": {"passed": true, "v2SignatureVerified": true, "evidence": "artifacts/performance/apk-verify-v051.log"},
+    "boot": {"passed": true, "bootSeconds": 21.614, "stabilitySeconds": 5, "systemUiLaunches": 2, "evidence": "artifacts/performance/miui-v051-boot/apk-desktop-report.json"}
+  },
+  "applicationRestartSamples": {
+    "method": "Force-stop then Activity start -W without clearing user data; one sample per app per pass",
+    "beforeCacheV050": {"douyinWaitTimeMs": 8993, "qqWaitTimeMs": 10598},
+    "v051FirstPass": {"douyinWaitTimeMs": 7602, "qqWaitTimeMs": 2212},
+    "v051CacheHitPass": {"douyinWaitTimeMs": 2342, "qqWaitTimeMs": 3284},
+    "cachedDexMappings": {"com.ss.android.ugc.aweme": 59, "com.tencent.mobileqq": 92},
+    "drawn": true,
+    "crashes": [],
+    "observationSecondsPerPass": 2,
+    "beforeEvidence": ["artifacts/app-compat/miui-v050-apps/report.json", "artifacts/app-compat/miui-v050-qq-before-cache/report.json"],
+    "afterEvidence": ["artifacts/app-compat/miui-v051-cache-prime/report.json", "artifacts/app-compat/miui-v051-cache-hit/report.json", "artifacts/performance/miui-v051-dex-mappings.json"],
+    "limitation": "Single device samples; thermal state, content and background work were not fixed"
+  },
+  "surfaceSamples": {
+    "douyinBeforeV049": {"swipes": 4, "presentFps": 50.18, "intervalP95Ms": 58.087, "intervalMaxMs": 99.574, "cpuCores": 3.804, "evidence": "artifacts/performance/miui-v049-douyin-before.json"},
+    "douyinAfterV051": {"swipes": 4, "presentFps": 73.96, "intervalP95Ms": 33.19, "intervalMaxMs": 66.384, "cpuCores": 4.222, "evidence": "artifacts/performance/miui-v051-douyin.json"},
+    "miuiHomeHorizontalV051": {"swipes": 4, "presentFps": 93.63, "intervalP95Ms": 16.598, "intervalMaxMs": 24.896, "cpuCores": 2.852, "evidence": "artifacts/performance/miui-v051-home-horizontal.json"},
+    "miuiHomeVerticalV051": {"swipes": 4, "presentFps": 70.26, "intervalP95Ms": 16.598, "intervalMaxMs": 531.048, "cpuCores": 2.87, "evidence": "artifacts/performance/miui-v051-home.json"},
+    "limitation": "Actual SurfaceFlinger presents including input-command gaps and idle periods; not input-to-photon latency or stable 120 FPS"
+  },
+  "remaining": [
+    "Douyin retains occasional long frame intervals and high total application CPU",
+    "First uncached app launch still performs full DEX verification",
+    "QQ space original video replay remains pending",
+    "Cross-device and long-term behavior not measured in this release"
+  ]
+}

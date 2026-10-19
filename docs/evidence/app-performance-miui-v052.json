@@ -1,0 +1,51 @@
+{
+  "date": "2026-10-11",
+  "package": "io.a10vm.miui",
+  "versionName": "0.2.52-miui12-ready-dispatch",
+  "versionCode": 62,
+  "installed": true,
+  "rootRequiredByGuest": false,
+  "applicationDataPreserved": true,
+  "implementation": [
+    "Dispatch only processes with changed requests, queues or synchronous call state",
+    "Send only connections with queued output; epoll handles blocked sockets",
+    "Register Binder threads using the owning context thread index",
+    "Preserve read parking, nested callbacks, looper spawn, rearm and immediate replies"
+  ],
+  "checks": {
+    "binderSeparateProcesses": {"passed": true, "checks": 25, "evidence": "artifacts/performance/broker-ready-native-final.log"},
+    "hwbinderSeparateProcesses": {"passed": true, "checks": 16, "evidence": "artifacts/performance/broker-ready-hwbinder.log"},
+    "nestedDispatchAndCleanup": {"passed": true, "evidence": "artifacts/performance/broker-ready-cleanup-final.log"},
+    "multipleContexts": {"passed": true, "evidence": "artifacts/performance/broker-ready-multi-open.log"},
+    "peerSecurityContext": {"passed": true, "evidence": "artifacts/performance/broker-ready-security.log"},
+    "apkContentsAndSignature": {"passed": true, "evidence": "artifacts/performance/apk-verify-v052.log"},
+    "boot": {"passed": true, "bootSeconds": 22.97, "stabilitySeconds": 5, "systemUiLaunches": 2, "evidence": "artifacts/performance/miui-v052-boot/apk-desktop-report.json"}
+  },
+  "brokerBenchmark": {
+    "registeredIdleProcesses": 256,
+    "rounds": 3000,
+    "before": {"elapsedSeconds": 0.102038, "brokerCpuSeconds": 0.05, "roundTripsPerSecond": 29401},
+    "after": {"elapsedSeconds": 0.061547, "brokerCpuSeconds": 0.03, "roundTripsPerSecond": 48743},
+    "backpressureDrained": true,
+    "activePeerSurvivedClose": true,
+    "idleCpuTicks": 0,
+    "evidence": ["artifacts/performance/broker-registered-before.json", "artifacts/performance/broker-registered-final.json"],
+    "limitation": "Single short Binder samples; excludes app rendering and ART"
+  },
+  "applicationRestartSamples": {
+    "method": "Force-stop then Activity start -W, preserving user data",
+    "qqWaitTimeMs": 1881,
+    "douyinWaitTimeMs": 2419,
+    "drawn": true,
+    "crashes": [],
+    "observationSeconds": 2,
+    "evidence": "artifacts/app-compat/miui-v052-apps/report.json"
+  },
+  "surfaceSamples": {
+    "douyin": {"swipes": 8, "presentFps": 72.84, "intervalP95Ms": 33.194, "intervalMaxMs": 390.029, "cpuCores": 3.049, "evidence": "artifacts/performance/miui-v052-douyin.json"},
+    "miuiHomeHorizontal": {"swipes": 4, "presentFps": 117.9, "intervalP95Ms": 8.3, "intervalMaxMs": 33.193, "cpuCores": 2.048, "evidence": "artifacts/performance/miui-v052-home-horizontal.json"},
+    "limitation": "Surface presents include input-command gaps and idle frames; content, temperature and background load were not fixed"
+  },
+  "activeCpuProfile": {"samples": 44250, "collectDeadNodesPercent": 36.42, "dispatchPercent": 1.79, "evidence": "artifacts/performance/miui-v052-active-cpu.txt"},
+  "remaining": ["Incremental node reclamation is the next measured bottleneck", "Douyin retains long frame intervals", "First uncached application launch and cross-device behavior remain pending"]
+}

@@ -1,0 +1,83 @@
+{
+  "date": "2026-10-08",
+  "stage": "rootless Android 10 ART and native graphics trial",
+  "rootRequired": false,
+  "loaderFromSource": true,
+  "artIntegrated": true,
+  "guestSdk": 29,
+  "apkRunVerified": false,
+  "surfaceVerified": false,
+  "desktopImplemented": false,
+  "performanceVerified": false,
+  "apk": {
+    "path": "artifacts/apk/a10vm-0.2.1-native-art-debug.apk",
+    "downloadCopy": "/storage/emulated/0/Download/A10VM-0.2.1-native-art.apk",
+    "package": "io.a10vm",
+    "versionCode": 11,
+    "versionName": "0.2.1-native-art",
+    "bytes": 25235071,
+    "sha256": "588b3408fbc1a83a951b0d9d74a58483c691a232751a102394f89713906287f7",
+    "v2SignatureVerified": true,
+    "nativeFilesVerified": 43,
+    "runtimeDataFilesVerified": 6,
+    "jniExportsVerified": 12,
+    "qemuPackaged": false,
+    "tcgPackaged": false,
+    "rfbPackaged": false,
+    "guestImagePackaged": false,
+    "report": "artifacts/container/graphics/native-display-apk-report.json",
+    "reportSha256": "bb09fea0ce31def54e7991696fb2a1717be2df04d0e3784b1b981d28c4ae2ff5"
+  },
+  "validation": {
+    "assembleDebug": true,
+    "lintErrors": 0,
+    "lintWarnings": 3,
+    "adbDeviceConnected": false,
+    "measuredSurfaceHz": null,
+    "measuredTouchLatencyMs": null
+  },
+  "art": {
+    "executionContext": "ordinary Termux UID, packaged ELF inputs in a shared native directory; not APK execution",
+    "uid": 10373,
+    "effectiveCapabilities": "0000000000000000",
+    "passed": true,
+    "exitCode": 0,
+    "threadCheck": true,
+    "fileRoundTrip": true,
+    "executableMappings": 40,
+    "validatorNegatives": ["wrongUid", "wrongEuid", "capabilities", "hostLibc", "missingArt"],
+    "report": "artifacts/container/art/art-local-report.json",
+    "reportSha256": "3a81737551a31f2848ebf0a7f0bcd599f2865d774ce13142a15081d83556bd64"
+  },
+  "graphics": {
+    "executionContext": "ordinary Termux UID with production renderer/client and GPU pbuffer; not Surface execution",
+    "hostGpu": "EGL 1.5 / Qualcomm / Adreno (TM) 830",
+    "normal": {
+      "passed": true,
+      "frames": 50,
+      "inputEvents": 205,
+      "echoSequence": 205,
+      "report": "artifacts/container/graphics/native-window-report.json",
+      "reportSha256": "f78b8c38a60abdda8eaee9281cf6902fd97906e321f25528e4f830050ba1a9f6"
+    },
+    "stallInput": {
+      "passed": true,
+      "inputDeliveredDuringGlPause": true,
+      "inputEvents": 205,
+      "report": "artifacts/container/graphics/native-window-stall-input-report.json",
+      "reportSha256": "080b2b609a5f4c8135d86bdc5d43dd40f475389cb3baf8d531ca9d89358c60ba"
+    },
+    "stopPending": {
+      "passed": true,
+      "inputEventsAppliedBeforeExit": 205,
+      "report": "artifacts/container/graphics/native-window-stop-pending-report.json",
+      "reportSha256": "c04a3dac3c8eb755a87cb2d580ae51c6a7528e8da46ebf90e7c24dba53df660b"
+    }
+  },
+  "pending": [
+    "APK installation, Surface frame rate and touch latency measurement",
+    "complete guest EGL/renderControl/gralloc/HWC/SurfaceFlinger",
+    "Binder/HwBinder and Android system services",
+    "Android desktop boot and guest application behavior"
+  ]
+}
